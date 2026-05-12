@@ -46,6 +46,8 @@ QUALITIES = ["low", "medium", "high", "auto"]
 DEFAULT_INPUT_DIR = Path("input")
 DEFAULT_OUTPUT_DIR = Path("output")
 DEFAULT_PROMPT_FILE = DEFAULT_INPUT_DIR / "prompt.txt"
+DEFAULT_BATCH_PREFIX = "image"
+TEXT_PROMPT_EXTENSIONS = {".txt", ".md"}
 
 
 def resolve_prompt_path(prompt_name: str, input_dir: Path) -> Path:
@@ -63,13 +65,107 @@ def resolve_prompt_path(prompt_name: str, input_dir: Path) -> Path:
 def load_prompt(prompt_path: Path) -> str:
     if not prompt_path.exists():
         raise FileNotFoundError(f"找不到 prompt 檔案：{prompt_path}")
-    if prompt_path.suffix.lower() != ".txt":
-        raise ValueError(f"prompt 檔案必須是 .txt：{prompt_path}")
+    if prompt_path.suffix.lower() not in TEXT_PROMPT_EXTENSIONS:
+        raise ValueError(f"prompt 檔案必須是 .txt 或 .md：{prompt_path}")
 
     prompt = prompt_path.read_text(encoding="utf-8").strip()
     if not prompt:
         raise ValueError(f"prompt 檔案是空的：{prompt_path}")
     return prompt
+
+
+def parse_markdown_batch(batch_path: Path) -> tuple[str | None, list[tuple[str | None, str]]]:
+    raw_text = load_prompt(batch_path)
+    current_section: str | None = None
+    current_lines: list[str] = []
+    style_prompt: str | None = None
+    items: list[tuple[str | None, str]] = []
+
+    def normalize_section_content(content: str) -> str:
+        stripped = content.strip()
+        lines = stripped.splitlines()
+        if len(lines) >= 2 and lines[0].strip().startswith("```") and lines[-1].strip() == "```":
+            return "\n".join(lines[1:-1]).strip()
+        return stripped
+
+    def flush_section() -> None:
+        nonlocal current_section, current_lines, style_prompt, items
+        if current_section is None:
+            current_lines = []
+            return
+
+        content = normalize_section_content("\n".join(current_lines))
+        if not content:
+            current_lines = []
+            return
+
+        section_name = current_section.strip()
+        section_key = section_name.lower()
+        if section_key == "style":
+            style_prompt = content
+        elif section_key.startswith("image"):
+            items.append((section_name, content))
+        else:
+            raise ValueError(f"不支援的 Markdown 區塊標題：{section_name}")
+
+        current_lines = []
+
+    for raw_line in raw_text.splitlines():
+        stripped = raw_line.strip()
+        if stripped.startswith("#"):
+            flush_section()
+            current_section = stripped.lstrip("#").strip()
+            continue
+
+        if current_section is not None:
+            current_lines.append(raw_line)
+
+    flush_section()
+
+    if not items:
+        raise ValueError(f"Markdown 批次檔沒有任何 `# image ...` 區塊：{batch_path}")
+
+    return style_prompt, items
+
+
+def load_batch_items(batch_path: Path) -> list[tuple[str | None, str]]:
+    raw_text = load_prompt(batch_path)
+    items: list[tuple[str | None, str]] = []
+
+    for line_number, raw_line in enumerate(raw_text.splitlines(), start=1):
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+
+        if "|" in line:
+            name_part, prompt_part = line.split("|", 1)
+            name = name_part.strip() or None
+            prompt = prompt_part.strip()
+        else:
+            name = None
+            prompt = line
+
+        if not prompt:
+            raise ValueError(f"批次檔第 {line_number} 行沒有 prompt：{batch_path}")
+
+        items.append((name, prompt))
+
+    if not items:
+        raise ValueError(f"批次檔沒有可用內容：{batch_path}")
+
+    return items
+
+
+def build_combined_prompt(style_prompt: str | None, scene_prompt: str) -> str:
+    if not style_prompt:
+        return scene_prompt
+    return f"{style_prompt.strip()}\n\n{scene_prompt.strip()}"
+
+
+def load_batch_definition(batch_path: Path) -> tuple[str | None, list[tuple[str | None, str]]]:
+    if batch_path.suffix.lower() == ".md":
+        return parse_markdown_batch(batch_path)
+    return None, load_batch_items(batch_path)
 
 
 def resolve_output_path(output_name: str, output_dir: Path) -> Path:
@@ -83,14 +179,24 @@ def resolve_output_path(output_name: str, output_dir: Path) -> Path:
     return output_dir / output_path
 
 
+def sanitize_output_stem(name: str) -> str:
+    allowed = []
+    for char in name.strip():
+        if char.isalnum() or char in {"-", "_"}:
+            allowed.append(char)
+        elif char in {" ", "."}:
+            allowed.append("_")
+    stem = "".join(allowed).strip("_")
+    return stem or DEFAULT_BATCH_PREFIX
+
+
 def generate_image(
+    client: OpenAI,
     prompt: str,
     output_path: Path,
     size: str = "1024x1024",
     quality: Literal["low", "medium", "high", "auto"] = "medium",
 ) -> Path:
-    client = OpenAI()
-
     print("[*] 正在送出 prompt，等待 gpt-image-2 回應...")
     print(f"    尺寸   : {size}  畫質: {quality}")
 
@@ -111,6 +217,29 @@ def generate_image(
     return output_path
 
 
+def generate_batch(
+    client: OpenAI,
+    batch_items: list[tuple[str | None, str]],
+    output_dir: Path,
+    size: str,
+    quality: Literal["low", "medium", "high", "auto"],
+    style_prompt: str | None,
+    batch_prefix: str,
+) -> list[Path]:
+    results: list[Path] = []
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    for index, (custom_name, scene_prompt) in enumerate(batch_items, start=1):
+        stem = sanitize_output_stem(custom_name or f"{batch_prefix}_{index:02d}")
+        output_path = output_dir / f"{stem}.png"
+        combined_prompt = build_combined_prompt(style_prompt, scene_prompt)
+
+        print(f"[{index}/{len(batch_items)}] 生成中：{output_path.name}")
+        results.append(generate_image(client, combined_prompt, output_path, size, quality))
+
+    return results
+
+
 if __name__ == "__main__":
     if not os.environ.get("OPENAI_API_KEY"):
         print("[-] 錯誤：找不到 OPENAI_API_KEY，請在 .env 或系統環境變數中設定。")
@@ -121,13 +250,27 @@ if __name__ == "__main__":
         "-p",
         "--prompt-file",
         default=str(DEFAULT_PROMPT_FILE),
-        help="prompt 文字檔路徑（預設: input/prompt.txt）",
+        help="單張模式的 prompt 文字檔路徑（預設: input/prompt.txt）",
+    )
+    parser.add_argument(
+        "-b",
+        "--batch-file",
+        help="批次模式的 prompt 檔；可用 `.txt` 每行一張，或 `.md` 的 `# style` / `# image xx` 結構",
+    )
+    parser.add_argument(
+        "--style-file",
+        help="批次模式共用的風格 prompt 檔",
+    )
+    parser.add_argument(
+        "--batch-prefix",
+        default=DEFAULT_BATCH_PREFIX,
+        help="批次模式未指定檔名時的預設前綴（預設: image）",
     )
     parser.add_argument(
         "-o",
         "--output",
         default="output.png",
-        help="輸出檔名（預設會存到 output/ 內）",
+        help="單張模式輸出檔名（預設會存到 output/ 內）",
     )
     parser.add_argument(
         "--output-dir",
@@ -138,14 +281,34 @@ if __name__ == "__main__":
     parser.add_argument("-q", "--quality", default="medium", choices=QUALITIES, help="畫質")
     args = parser.parse_args()
 
-    prompt_path = resolve_prompt_path(args.prompt_file, DEFAULT_INPUT_DIR)
     output_dir = Path(args.output_dir)
 
     try:
-        prompt = load_prompt(prompt_path)
-        output_path = resolve_output_path(args.output, output_dir)
+        client = OpenAI()
+
+        if args.batch_file:
+            batch_path = resolve_prompt_path(args.batch_file, DEFAULT_INPUT_DIR)
+            markdown_style_prompt, batch_items = load_batch_definition(batch_path)
+            style_prompt = markdown_style_prompt
+            if args.style_file:
+                style_path = resolve_prompt_path(args.style_file, DEFAULT_INPUT_DIR)
+                extra_style_prompt = load_prompt(style_path)
+                style_prompt = build_combined_prompt(extra_style_prompt, style_prompt) if style_prompt else extra_style_prompt
+
+            generate_batch(
+                client,
+                batch_items,
+                output_dir,
+                args.size,
+                args.quality,
+                style_prompt,
+                sanitize_output_stem(args.batch_prefix),
+            )
+        else:
+            prompt_path = resolve_prompt_path(args.prompt_file, DEFAULT_INPUT_DIR)
+            prompt = load_prompt(prompt_path)
+            output_path = resolve_output_path(args.output, output_dir)
+            generate_image(client, prompt, output_path, args.size, args.quality)
     except (FileNotFoundError, ValueError) as exc:
         print(f"[-] 錯誤：{exc}")
         sys.exit(1)
-
-    generate_image(prompt, output_path, args.size, args.quality)

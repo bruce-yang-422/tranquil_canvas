@@ -2,7 +2,7 @@
 
 透過 OpenAI `gpt-image-2` 模型從終端機生成圖片的極簡 CLI 工具。
 
-把提示詞存成 `.txt` 放進 `input/`，執行 `main.py`，圖片會輸出到 `output/`。
+把提示詞存成 `.txt` 或 `.md` 放進 `input/`，執行 `main.py`，圖片會輸出到 `output/`。
 
 ## 環境需求
 
@@ -40,6 +40,9 @@ python main.py
 | 參數 | 預設值 | 說明 |
 | ---- | ------ | ---- |
 | `-p`, `--prompt-file` | `input/prompt.txt` | prompt 文字檔路徑；只輸入檔名時會自動從 `input/` 尋找 |
+| `-b`, `--batch-file` | — | 批次模式 prompt 檔；支援 `.txt` 或 `.md` |
+| `--style-file` | — | 批次模式額外共用的 style prompt 檔 |
+| `--batch-prefix` | `image` | 批次模式未指定檔名時的輸出前綴 |
 | `-o`, `--output` | `output.png` | 輸出檔名（預設存到 `output/`） |
 | `--output-dir` | `output` | 輸出資料夾 |
 | `-s`, `--size` | `1024x1024` | 圖片尺寸（目前僅支援固定尺寸，不支援 `auto`） |
@@ -90,6 +93,12 @@ python main.py -p wuxia_poster.txt -o poster_v1.png
 
 # 指定輸出資料夾
 python main.py -p yue-lingshan.txt --output-dir output/drafts -o draft.png
+
+# 批次模式：.txt 每行一張圖，可用 `檔名|prompt`
+python main.py -b infographic-lines.txt -s 1024x1024 -q low --output-dir output/infographic
+
+# 批次模式：.md 用 `# style` 搭配多個 `# image xx`
+python main.py -b infographic-example.md -s 1024x1024 -q low --output-dir output/infographic
 
 # 最便宜的合法草稿尺寸：1024x1024
 python main.py -p yue-lingshan.txt -s 1024x1024 -q low -o cheap_square_draft.png
@@ -143,6 +152,46 @@ tranquil-canvas/
 ├── requirements.txt
 └── .env             # API 金鑰（不納入版控）
 ```
+
+## 批次懶人包
+
+如果你要做 10 張連貫的 infographic，推薦用 `.md`：
+
+```md
+# style
+```
+整體風格是乾淨的 infographic、扁平設計、統一配色...
+```
+
+# image 01
+```
+主題：什麼是過敏
+重點：三個症狀、簡單圖示、清楚標題
+```
+
+# image 02
+```
+主題：常見誘因
+重點：食物、塵蟎、花粉...
+```
+```
+
+執行時：
+
+```bash
+python main.py -b infographic-example.md -s 1024x1024 -q low --output-dir output/infographic
+```
+
+程式會照順序執行：
+
+1. 讀取 `# style`
+2. 合併 `# style` + `# image 01`
+3. 送出第 1 張圖並存檔
+4. 合併 `# style` + `# image 02`
+5. 送出第 2 張圖並存檔
+
+也就是每一張圖都會共用同一份 style prompt，但內容 prompt 逐張切換。
+你也可以像上面一樣把每個區塊內容包在 Markdown 的 code block（```）裡，程式會自動去掉外層符號再送出。
 
 ## 費用參考（gpt-image-2）
 

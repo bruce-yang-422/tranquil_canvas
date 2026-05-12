@@ -1,20 +1,91 @@
-Scene: Huashan mountain gate at early morning. Stone steps, weathered pine trees, pale grey mountain rocks, distant peaks half-hidden in thin mist. Cool diffused daylight through mountain haze, soft cold-toned natural light.
+<task>
+生成一張 9:16 直式電影感人像海報。
+主角為《笑傲江湖》中的岳靈珊。
+風格為「真實攝影 × 架空明代武俠 × 華山派女弟子 × 清麗英氣」。
+</task>
 
-Subject: Yue Lingshan, a young Chinese woman in her early 20s, daughter of the Huashan sect leader. Standing still in a 3/4 angle, face turned toward camera. Right hand firmly gripping the scabbard at mid-length, fingers wrapped around the scabbard body. Sword held vertically at her right side, tip pointing down to the ground. Left hand relaxed at side or resting lightly on waist sash. NOT touching the hilt, NOT drawing sword, NOT mid-action.
+<era_background>
+時代背景為架空武俠世界，服飾原型參考明代中後期民間女俠裝束。
+整體不要宮廷感，而是江湖門派弟子的輕便、俐落、練武感。
+場景與服裝帶有華山派清正、山門、劍宗氣息。
+</era_background>
 
-Important details:
-- Face: small and delicate, lively expressive eyes, natural pale skin, faint traditional makeup, no modern eyeliner or cosmetic styling
-- Hair: neatly half-pinned Ming-dynasty style, clean and simple, secured with a pale jade hairpin or blue-white ribbon, no elaborate ornaments
-- Outfit: off-white narrow-sleeve crossed-collar short jacket over high-waist pleated skirt, pale blue and light grey tones, dark ink-blue trim at collar and cuffs, dark cloth waist sash, small jade pendant and pale blue sword tassel at waist
-- Sword: Chinese straight sword (jian), fully sheathed. Plain dark-stained wood scabbard, simple silver guard. Pale blue silk tassel tied at the very bottom tip of the scabbard, hanging down from the scabbard end — NOT near the hilt, NOT near the guard, NOT at mid-scabbard. No ornate carvings, no Japanese-style tsuba, no excessive decoration.
-- Expression: natural slight smile, bright direct gaze, relaxed confidence, NOT posed or dramatic
-- Fabric texture: clean linen and light silk, visible weave, no heavy embroidery, no court decoration
-- Background: slightly defocused, stone steps and mist visible, wooden gate lintel in upper frame
+<subject>
+岳靈珊，成年女性，20歲出頭。
+她是華山派掌門之女，令狐沖的小師妹。
+氣質清麗、靈動、明快、嬌俏中帶英氣。
+眼神明亮專注，帶一點少女任性與門派千金的自信。
+表情自然，嘴角有淡淡笑意，像剛練完劍後回頭看向鏡頭。
+整體感覺要清新、俐落、青春、有江湖靈氣。
+</subject>
 
-Use case: 9:16 vertical wuxia movie poster, subject centered-right, left column reserved for vertical Chinese calligraphy title
+<appearance>
+東方古典清麗美人。
+臉型精緻小巧，眉眼靈動，眼神乾淨明亮。
+肌膚白皙自然，妝容淡雅，不濃豔。
+髮型為明代少女風格半束髮，上方簡潔束起，餘下長髮自然垂落。
+髮飾簡單，可用青玉簪、素銀小髮釵或華山派藍白髮帶。
+整體造型清爽，不華麗。
+</appearance>
 
-Constraints: no red seals, no stamps, no chops, no watermarks, no extra text. If "華山" or "華山派" appears in the image, render in seal script (篆書) only.
+<physique>
+身形纖細勻稱，體態輕盈。
+肩頸線條清秀，腰線明顯，四肢修長。
+身材玲瓏有致但不誇張，適合長年練劍的年輕女俠。
+整體是靈巧、敏捷、青春健康的武俠少女體態。
+</physique>
 
-Left side vertical Chinese calligraphy in gold ink:
+<outfit>
+穿華山派女弟子風格的改良明代女俠服。
+主色為月白、淡青、淺藍、灰白，可用少量墨青作滾邊。
+上身為窄袖交領短襖或合身襦衫，方便拔劍與行動。
+外層可有輕薄短披風或半臂，隨山風吹動。
+下身為高腰褶裙或便於行動的女俠裙裝，裙擺不拖地。
+腰間束深色布質腰封，掛華山派劍穗與小玉佩。
+整體服裝乾淨、俐落、清雅，有門派弟子的青春感。
+</outfit>
+
+<props>
+手持一柄華山派長劍。
+長劍尚未完全出鞘，或一手握劍柄、一手扶劍鞘。
+劍鞘簡潔古樸，深色木質或墨青皮革包覆，配素銀劍裝。
+劍穗可用淺藍或白色，與華山派清雅氣質呼應。
+</props>
+
+<action>
+岳靈珊採用電影感 3/4 側身姿態。
+身體斜轉約 30–45 度，肩線一前一後，臉部轉向鏡頭。
+一手扶著劍鞘，另一手握住劍柄，像剛要拔劍或剛收劍。
+姿態輕盈俐落，帶小師妹的靈動與華山女弟子的英氣。
+不是全側身，也不是僵硬正面站姿。
+</action>
+
+<background_props>
+背景為華山山門或山道練劍場。
+可見青灰色山石、雲霧、松樹、石階、遠處山峰與簡潔木製山門。
+地面有落葉、劍痕與濕潤石板。
+氛圍清晨或薄暮，山風微冷，帶一點門派清修與江湖青春感。
+</background_props>
+
+<composition>
+9:16 直式電影海報構圖。
+平視鏡頭，半身到膝上構圖。
+人物位於畫面中央偏右，左側保留直式中文書法標題區。
+背景山門與雲霧略微虛化，人物臉部、劍、腰封與服裝紋理清楚。
+</composition>
+
+<text>
 主標題：「岳靈珊」
 副標語：「靈珊一笑春風暖，劍尖猶帶山門霜」
+字體為金色或淡金色行書，古典武俠海報風格。
+</text>
+
+<lighting>
+真實攝影質感。
+清晨山間自然光，柔和冷色調，帶淡淡雲霧。
+臉部有乾淨柔光，突出清麗五官與明亮眼神。
+布料、劍鞘、玉飾、髮絲、石階與山霧細節清楚。
+整體畫面清新、俐落、青春、寫實，具有武俠電影海報質感。
+</lighting>
+
+Constraints: no red seals, no stamps, no chops, no watermarks, no extra text. If "華山" or "華山派" appears in the image, render in seal script (篆書) only.
