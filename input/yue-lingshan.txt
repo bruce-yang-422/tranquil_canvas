@@ -1,0 +1,20 @@
+Scene: Huashan mountain gate at early morning. Stone steps, weathered pine trees, pale grey mountain rocks, distant peaks half-hidden in thin mist. Cool diffused daylight through mountain haze, soft cold-toned natural light.
+
+Subject: Yue Lingshan, a young Chinese woman in her early 20s, daughter of the Huashan sect leader. Standing still in a 3/4 angle, face turned toward camera. Both hands resting on sword — one on hilt, one on scabbard — blade pointing downward. NOT mid-action, NOT drawing sword, NOT in motion.
+
+Important details:
+- Face: small and delicate, lively expressive eyes, natural pale skin, faint traditional makeup, no modern eyeliner or cosmetic styling
+- Hair: neatly half-pinned Ming-dynasty style, clean and simple, secured with a pale jade hairpin or blue-white ribbon, no elaborate ornaments
+- Outfit: off-white narrow-sleeve crossed-collar short jacket over high-waist pleated skirt, pale blue and light grey tones, dark ink-blue trim at collar and cuffs, dark cloth waist sash, small jade pendant and pale blue sword tassel at waist
+- Sword: plain dark wood scabbard with silver fittings, white or pale blue tassel, long straight jian
+- Expression: natural slight smile, bright direct gaze, relaxed confidence, NOT posed or dramatic
+- Fabric texture: clean linen and light silk, visible weave, no heavy embroidery, no court decoration
+- Background: slightly defocused, stone steps and mist visible, wooden gate lintel in upper frame
+
+Use case: 9:16 vertical wuxia movie poster, subject centered-right, left column reserved for vertical Chinese calligraphy title
+
+Constraints: no red seals, no stamps, no chops, no watermarks, no extra text. If "華山" or "華山派" appears in the image, render in seal script (篆書) only.
+
+Left side vertical Chinese calligraphy in gold ink:
+主標題：「岳靈珊」
+副標語：「靈珊一笑春風暖，劍尖猶帶山門霜」

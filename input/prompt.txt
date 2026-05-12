@@ -1,0 +1,97 @@
+<task>
+生成一張 9:16 直式電影感武俠人像海報。
+主角為《笑傲江湖》中的岳靈珊。
+風格為「真實攝影 × 架空明代武俠 × 華山派女弟子 × 清麗英氣」。
+</task>
+
+<core_aura>
+岳靈珊的氣質核心：
+She looks like she just finished a sword practice and turned back with a natural smile —
+young, bright, unguarded, and full of life.
+靈動、明快、青春、嬌俏中帶英氣。
+她不是冷豔女俠，不是嫵媚美人，是讓人一眼就覺得春風拂面的華山千金。
+這是她還在山上、尚未入江湖的那個時間點。
+</core_aura>
+
+<subject>
+岳靈珊，成年女性，20歲出頭。
+華山派掌門之女，自幼習劍，天真任性，劍法出色。
+此時尚在華山，未下山，未遇林平之，是最無憂的青春時刻。
+</subject>
+
+<expression_and_gaze>
+表情自然，嘴角有淡淡笑意，眼神明亮乾淨。
+像剛練完劍，收勢後回頭看向鏡頭的那一瞬間。
+natural, unposed smile after sword practice, bright and direct gaze.
+不是刻意擺pose，不是嫵媚回眸，是少女的自然靈動與門派千金的自信。
+帶一點任性，帶一點驕傲，但整體清爽不做作。
+</expression_and_gaze>
+
+<appearance>
+東方古典清麗美人，臉型精緻小巧，眉眼靈動。
+minimal traditional makeup, fair and natural skin, clean and fresh look.
+妝容淡雅素淨，不濃豔，符合明代武俠少女風格，不畫現代感妝容。
+肌膚白皙自然，整體清新，有少女感與健康感。
+</appearance>
+
+<hair>
+明代少女風格半束髮，neatly half-pinned, natural and clean, not elaborate.
+上方簡潔束起，餘下長髮自然垂落。
+髮飾簡單低調：青玉簪、素銀小髮釵或華山派藍白髮帶，一件即可。
+整體髮型清爽俐落，有少女感，不華麗，不複雜。
+</hair>
+
+<outfit>
+月白、淡青、淺藍、灰白為主色，少量墨青滾邊點綴。
+clean and light Ming-dynasty female swordsman style, practical and elegant.
+上身為窄袖交領短襖或合身襦衫，方便拔劍與行動。
+外層可有輕薄短披風或半臂，隨山風吹動飄起。
+下身為高腰褶裙，裙擺不拖地，便於練武行動。
+腰間束深色布質腰封，掛華山派劍穗與小玉佩。
+整體服裝乾淨、俐落、清雅，有門派弟子的青春練武感。
+NOT heavy embroidery, NOT court style, NOT overly decorated.
+</outfit>
+
+<posture_and_props>
+電影感 3/4 側身姿態，身體斜轉約 30–45 度，臉部轉向鏡頭。
+one hand resting on sword scabbard, other hand on sword hilt,
+as if just finishing a sword form or about to sheathe the sword.
+手持華山派長劍，劍尚未完全入鞘或剛收劍。
+劍鞘簡潔古樸，深色木質或墨青皮革包覆，配素銀劍裝。
+劍穗淺藍或白色，與華山派清雅氣質呼應。
+姿態輕盈俐落，帶小師妹的靈動與華山女弟子的英氣。
+</posture_and_props>
+
+<background>
+背景為華山山道或山門練劍場。
+可見青灰色山石、雲霧、蒼松、石階、遠處山峰與簡潔木製山門。
+地面有落葉、劍痕與濕潤石板。
+背景略微虛化，人物臉部、劍與服裝紋理為焦點。
+</background>
+
+<composition>
+9:16 直式電影海報構圖。
+平視鏡頭，半身到膝上構圖。
+人物位於畫面中央偏右，左側保留直式中文書法標題區。
+</composition>
+
+<lighting>
+清晨山間自然光，柔和冷色調，帶淡淡雲霧與山嵐。
+morning light through mountain mist, soft and cool, clean and fresh.
+臉部有乾淨柔光，突出清麗五官與明亮眼神。
+布料、劍鞘、玉飾、髮絲、石階與山霧細節清楚。
+整體畫面清新、俐落、青春，具有武俠電影海報質感。
+</lighting>
+
+<text>
+左側加入直式中文書法。
+主標題：「岳靈珊」（大字）
+副標語：「靈珊一笑春風暖，劍尖猶帶山門霜」（小字）
+金色或淡金色行書，古典武俠海報風格，不遮擋人物與劍。
+畫面中不得出現任何印章、朱印、紅印或任何形式的seal stamp。
+NO red seals, NO stamps, NO chops of any kind anywhere in the image.
+若畫面中出現華山派相關文字（如「華山」、「華山派」等），
+一律使用篆體字（seal script），不得使用楷書或行書。
+Any Huashan sect text must be rendered in Chinese seal script (篆書),
+not regular script or cursive script.
+</text>

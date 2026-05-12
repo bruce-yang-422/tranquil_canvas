@@ -2,7 +2,7 @@
 
 透過 OpenAI `gpt-image-2` 模型從終端機生成圖片的極簡 CLI 工具。
 
-在 `prompt.py` 裡寫好提示詞，執行 `main.py`，取得圖片。
+把提示詞存成 `.txt` 放進 `input/`，執行 `main.py`，圖片會輸出到 `output/`。
 
 ## 環境需求
 
@@ -29,7 +29,7 @@ OPENAI_API_KEY=sk-proj-...
 
 ## 使用方式
 
-編輯 `prompt.py` 設定提示詞，然後執行：
+先編輯 `input/prompt.txt`，然後執行：
 
 ```bash
 python main.py
@@ -39,8 +39,10 @@ python main.py
 
 | 參數 | 預設值 | 說明 |
 | ---- | ------ | ---- |
-| `-o`, `--output` | `output.png` | 輸出檔名 |
-| `-s`, `--size` | `1024x1024` | 圖片尺寸 |
+| `-p`, `--prompt-file` | `input/prompt.txt` | prompt 文字檔路徑；只輸入檔名時會自動從 `input/` 尋找 |
+| `-o`, `--output` | `output.png` | 輸出檔名（預設存到 `output/`） |
+| `--output-dir` | `output` | 輸出資料夾 |
+| `-s`, `--size` | `1024x1024` | 圖片尺寸（目前僅支援固定尺寸，不支援 `auto`） |
 | `-q`, `--quality` | `medium` | 畫質 |
 
 ### 尺寸選項
@@ -68,13 +70,22 @@ python main.py
 ### 範例
 
 ```bash
-# 預設（1024x1024，medium 畫質）
+# 預設讀取 input/prompt.txt，輸出到 output/output.png
 python main.py
 
-# 指定輸出檔名
+# 只指定輸出檔名，會自動存到 output/my_image.png
 python main.py -o my_image.png
 
-# 直式海報，高畫質
+# 指定另一個 prompt 檔案，只輸入檔名即可
+python main.py -p yue_lingshan.txt -o yue_lingshan.png
+
+# 指定 prompt 與輸出檔名，兩者都不用完整路徑
+python main.py -p wuxia_poster.txt -o poster_v1.png
+
+# 指定輸出資料夾
+python main.py -p yue_lingshan.txt --output-dir output/drafts -o draft.png
+
+# 2:3 直式海報，高畫質
 python main.py -s 1024x1536 -q high -o poster.png
 
 # 9:16 直式（海報、手機桌布）— 先草稿確認後再出正式版
@@ -84,7 +95,7 @@ python main.py -s 1152x2048 -q high -o portrait_final.png
 # 16:9 橫式（桌面桌布、影片封面）
 python main.py -s 2048x1152 -q high -o landscape.png
 
-# 橫式寬幅，高畫質
+# 3:2 橫式，高畫質
 python main.py -s 1536x1024 -q high -o banner.png
 
 # 快速草稿（最省錢，適合測試 prompt）
@@ -93,39 +104,53 @@ python main.py -q low -o draft.png
 # 2K 正方形
 python main.py -s 2048x2048 -q high -o 2k.png
 
-# 2K 直式
-python main.py -s 1152x2048 -q high -o 2k_portrait.png
-
 # 4K 直式（最大解析度，實驗性）
 python main.py -s 2160x3840 -q high -o 4k.png
 
 # 4K 橫式（實驗性）
 python main.py -s 3840x2160 -q high -o 4k_landscape.png
 
-# 讓模型自動決定畫質與尺寸
-python main.py -s auto -q auto -o auto.png
+# 讓模型自動決定畫質
+python main.py -q auto -o auto_quality.png
 ```
 
 ## 專案結構
 
 ```text
 tranquil-canvas/
+├── input/
+│   └── prompt.txt   # 在這裡修改提示詞
+├── output/          # 生成的圖片會放在這裡
 ├── main.py          # 主程式
-├── prompt.py        # 在這裡修改提示詞
 ├── requirements.txt
-├── .env             # API 金鑰（不納入版控）
-└── output.png       # 生成的圖片
+└── .env             # API 金鑰（不納入版控）
 ```
 
 ## 費用參考（gpt-image-2）
 
-| 畫質   | 1024×1024 | 1024×1536 | 1536×1024 |
-|--------|-----------|-----------|-----------|
-| low    | $0.006    | $0.005    | $0.005    |
-| medium | $0.053    | $0.041    | $0.041    |
-| high   | $0.211    | $0.165    | $0.165    |
+以下是文件中的官方參考價格：
 
-實驗性高解析度尺寸費用會更高，複雜提示詞最長可能需要 2 分鐘。
+| 畫質 | 1024×1024 | 1024×1536 | 1536×1024 |
+| ---- | --------- | --------- | --------- |
+| `low` | $0.006 | $0.005 | $0.005 |
+| `medium` | $0.053 | $0.041 | $0.041 |
+| `high` | $0.211 | $0.165 | $0.165 |
+
+對應的輸出 token 參考如下：
+
+| 畫質 | 1024×1024 | 1024×1536 | 1536×1024 |
+| ---- | --------- | --------- | --------- |
+| `low` | 272 tokens | 408 tokens | 400 tokens |
+| `medium` | 1056 tokens | 1584 tokens | 1568 tokens |
+| `high` | 4160 tokens | 6240 tokens | 6208 tokens |
+
+補充說明：
+
+- 你目前程式支援的 `2048x1152`、`1152x2048`、`2048x2048`、`3840x2160`、`2160x3840` 並沒有在這份文件裡看到官方固定價目表，但可以合理判斷成本會高於 1024 / 1536 級別。
+- `low` 很適合拿來做草稿與 prompt 測試，通常最省錢。
+- 實際總成本不只圖片輸出，還包含 prompt 的 `input text tokens`。
+- 如果之後加上參考圖或編輯圖片，還會再加上 `input image tokens` 成本。
+- 複雜提示詞最長可能需要接近 2 分鐘。
 
 ## 授權
 
