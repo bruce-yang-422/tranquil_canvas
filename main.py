@@ -168,17 +168,86 @@ def load_batch_definition(batch_path: Path) -> tuple[str | None, list[tuple[str 
     return None, load_batch_items(batch_path)
 
 
+def parse_image_range(range_text: str, total_items: int) -> tuple[int, int]:
+    if "-" not in range_text:
+        raise ValueError("--range 格式必須是 起始-結束，例如 2-5")
+
+    start_text, end_text = range_text.split("-", 1)
+    try:
+        start = int(start_text.strip())
+        end = int(end_text.strip())
+    except ValueError as exc:
+        raise ValueError("--range 必須是數字範圍，例如 2-5") from exc
+
+    if start < 1 or end < 1 or start > total_items or end > total_items:
+        raise ValueError(f"--range 必須介於 1 到 {total_items} 之間")
+    if start > end:
+        raise ValueError("--range 的起始值不能大於結束值")
+
+    return start, end
+
+
+def parse_skip_images(skip_text: str, total_items: int) -> set[int]:
+    skipped: set[int] = set()
+    for raw_part in skip_text.split(","):
+        part = raw_part.strip()
+        if not part:
+            continue
+        try:
+            image_index = int(part)
+        except ValueError as exc:
+            raise ValueError("--skip-images 必須是逗號分隔的數字，例如 3,5,7") from exc
+
+        if image_index < 1 or image_index > total_items:
+            raise ValueError(f"--skip-images 必須介於 1 到 {total_items} 之間")
+        skipped.add(image_index)
+
+    return skipped
+
+
 def select_batch_items(
     batch_items: list[tuple[str | None, str]],
     selected_image: int | None,
+    from_image: int | None,
+    range_text: str | None,
+    skip_images_text: str | None,
 ) -> list[tuple[str | None, str]]:
-    if selected_image is None:
-        return batch_items
+    total_items = len(batch_items)
 
-    if selected_image < 1 or selected_image > len(batch_items):
-        raise ValueError(f"--image 必須介於 1 到 {len(batch_items)} 之間")
+    if selected_image is not None:
+        if selected_image < 1 or selected_image > total_items:
+            raise ValueError(f"--image 必須介於 1 到 {total_items} 之間")
+        start = selected_image
+        end = selected_image
+    elif range_text is not None:
+        start, end = parse_image_range(range_text, total_items)
+    elif from_image is not None:
+        if from_image < 1 or from_image > total_items:
+            raise ValueError(f"--from-image 必須介於 1 到 {total_items} 之間")
+        start = from_image
+        end = total_items
+    else:
+        start = 1
+        end = total_items
 
-    return [batch_items[selected_image - 1]]
+    selected = [
+        item
+        for index, item in enumerate(batch_items, start=1)
+        if start <= index <= end
+    ]
+
+    if skip_images_text:
+        skipped = parse_skip_images(skip_images_text, total_items)
+        selected = [
+            item
+            for index, item in enumerate(batch_items, start=1)
+            if start <= index <= end and index not in skipped
+        ]
+
+    if not selected:
+        raise ValueError("篩選後沒有任何要輸出的圖片，請檢查 --image / --from-image / --range / --skip-images")
+
+    return selected
 
 
 def resolve_output_path(output_name: str, output_dir: Path) -> Path:
@@ -285,6 +354,20 @@ if __name__ == "__main__":
         help="批次模式只輸出指定的第幾張（從 1 開始）",
     )
     parser.add_argument(
+        "--from-image",
+        type=int,
+        help="批次模式從指定張數開始一路輸出到最後（從 1 開始）",
+    )
+    parser.add_argument(
+        "--range",
+        dest="image_range",
+        help="批次模式只輸出指定範圍，例如 2-5",
+    )
+    parser.add_argument(
+        "--skip-images",
+        help="批次模式跳過指定張數，格式例如 3,7,9",
+    )
+    parser.add_argument(
         "-o",
         "--output",
         default="output.png",
@@ -307,7 +390,13 @@ if __name__ == "__main__":
         if args.batch_file:
             batch_path = resolve_prompt_path(args.batch_file, DEFAULT_INPUT_DIR)
             markdown_style_prompt, batch_items = load_batch_definition(batch_path)
-            batch_items = select_batch_items(batch_items, args.image)
+            batch_items = select_batch_items(
+                batch_items,
+                args.image,
+                args.from_image,
+                args.image_range,
+                args.skip_images,
+            )
             style_prompt = markdown_style_prompt
             if args.style_file:
                 style_path = resolve_prompt_path(args.style_file, DEFAULT_INPUT_DIR)

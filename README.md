@@ -44,6 +44,9 @@ python main.py
 | `--style-file` | — | 批次模式外部共用 style prompt 檔 |
 | `--batch-prefix` | `image` | 批次模式未指定檔名時的輸出前綴 |
 | `--image` | — | 批次模式只輸出指定的第幾張（從 1 開始） |
+| `--from-image` | — | 批次模式從指定張數開始一路輸出到最後 |
+| `--range` | — | 批次模式只輸出指定範圍，例如 `2-5` |
+| `--skip-images` | — | 批次模式跳過指定張數，例如 `3,7,9` |
 | `-o`, `--output` | `output.png` | 輸出檔名（自動存到 `--output-dir`） |
 | `--output-dir` | `output` | 輸出資料夾 |
 | `-s`, `--size` | `1024x1024` | 圖片尺寸 |
@@ -111,6 +114,15 @@ python main.py -b infographic-example.md -s 1024x1024 -q low --output-dir output
 
 # 批次模式：只重跑第 5 張
 python main.py -b infographic_God_Complex.md --image 5 -s 1024x1024 -q low --output-dir output/infographic_god_complex
+
+# 批次模式：從第 5 張開始一路重跑到最後
+python main.py -b infographic_God_Complex.md --from-image 5 -s 1024x1024 -q low --output-dir output/infographic_god_complex
+
+# 批次模式：只重跑第 2 到第 5 張
+python main.py -b infographic_God_Complex.md --range 2-5 -s 1024x1024 -q low --output-dir output/infographic_god_complex
+
+# 批次模式：全部重跑，但跳過第 3、7、9 張
+python main.py -b infographic_God_Complex.md --skip-images 3,7,9 -s 1024x1024 -q low --output-dir output/infographic_god_complex
 
 # 2K / 4K（實驗性）
 python main.py -s 2048x2048 -q high -o 2k.png
