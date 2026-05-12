@@ -157,7 +157,7 @@ tranquil-canvas/
 
 如果你要做 10 張連貫的 infographic，推薦用 `.md`：
 
-```md
+````md
 # style
 ```
 整體風格是乾淨的 infographic、扁平設計、統一配色...
@@ -174,7 +174,7 @@ tranquil-canvas/
 主題：常見誘因
 重點：食物、塵蟎、花粉...
 ```
-```
+````
 
 執行時：
 
