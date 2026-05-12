@@ -50,9 +50,9 @@ python main.py
 | `1024x1024` | 正方形 | 生成最快 |
 | `1536x1024` | 橫式 3:2 | |
 | `1024x1536` | 直式 2:3 | |
+| `2048x1152` | **16:9 橫式** | 最接近 16:9，適合桌面/影片封面 |
+| `1152x2048` | **9:16 直式** | 最接近 9:16，適合海報/手機桌布 |
 | `2048x2048` | 2K 正方形 | 實驗性功能 |
-| `2048x1152` | 2K 橫式 | 實驗性功能 |
-| `1152x2048` | 2K 直式 | 實驗性功能 |
 | `3840x2160` | 4K 橫式 | 實驗性功能 |
 | `2160x3840` | 4K 直式 | 實驗性功能，最大解析度 |
 
@@ -76,6 +76,13 @@ python main.py -o my_image.png
 
 # 直式海報，高畫質
 python main.py -s 1024x1536 -q high -o poster.png
+
+# 9:16 直式（海報、手機桌布）— 先草稿確認後再出正式版
+python main.py -s 1152x2048 -q low -o draft.png
+python main.py -s 1152x2048 -q high -o portrait_final.png
+
+# 16:9 橫式（桌面桌布、影片封面）
+python main.py -s 2048x1152 -q high -o landscape.png
 
 # 橫式寬幅，高畫質
 python main.py -s 1536x1024 -q high -o banner.png
