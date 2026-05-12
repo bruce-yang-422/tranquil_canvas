@@ -1,0 +1,30 @@
+# Environment
+.env
+.env.*
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Generated images
+*.png
+*.jpg
+*.jpeg
+*.webp
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
