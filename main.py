@@ -168,6 +168,19 @@ def load_batch_definition(batch_path: Path) -> tuple[str | None, list[tuple[str 
     return None, load_batch_items(batch_path)
 
 
+def select_batch_items(
+    batch_items: list[tuple[str | None, str]],
+    selected_image: int | None,
+) -> list[tuple[str | None, str]]:
+    if selected_image is None:
+        return batch_items
+
+    if selected_image < 1 or selected_image > len(batch_items):
+        raise ValueError(f"--image 必須介於 1 到 {len(batch_items)} 之間")
+
+    return [batch_items[selected_image - 1]]
+
+
 def resolve_output_path(output_name: str, output_dir: Path) -> Path:
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = Path(output_name)
@@ -267,6 +280,11 @@ if __name__ == "__main__":
         help="批次模式未指定檔名時的預設前綴（預設: image）",
     )
     parser.add_argument(
+        "--image",
+        type=int,
+        help="批次模式只輸出指定的第幾張（從 1 開始）",
+    )
+    parser.add_argument(
         "-o",
         "--output",
         default="output.png",
@@ -289,6 +307,7 @@ if __name__ == "__main__":
         if args.batch_file:
             batch_path = resolve_prompt_path(args.batch_file, DEFAULT_INPUT_DIR)
             markdown_style_prompt, batch_items = load_batch_definition(batch_path)
+            batch_items = select_batch_items(batch_items, args.image)
             style_prompt = markdown_style_prompt
             if args.style_file:
                 style_path = resolve_prompt_path(args.style_file, DEFAULT_INPUT_DIR)

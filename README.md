@@ -43,6 +43,7 @@ python main.py
 | `-b`, `--batch-file` | — | 批次模式 prompt 檔；支援 `.txt` 或 `.md` |
 | `--style-file` | — | 批次模式外部共用 style prompt 檔 |
 | `--batch-prefix` | `image` | 批次模式未指定檔名時的輸出前綴 |
+| `--image` | — | 批次模式只輸出指定的第幾張（從 1 開始） |
 | `-o`, `--output` | `output.png` | 輸出檔名（自動存到 `--output-dir`） |
 | `--output-dir` | `output` | 輸出資料夾 |
 | `-s`, `--size` | `1024x1024` | 圖片尺寸 |
@@ -107,6 +108,9 @@ python main.py -b infographic-lines.txt -s 1024x1024 -q low --output-dir output/
 
 # 批次模式：.md 的 style + image 區塊
 python main.py -b infographic-example.md -s 1024x1024 -q low --output-dir output/infographic
+
+# 批次模式：只重跑第 5 張
+python main.py -b infographic_God_Complex.md --image 5 -s 1024x1024 -q low --output-dir output/infographic_god_complex
 
 # 2K / 4K（實驗性）
 python main.py -s 2048x2048 -q high -o 2k.png
