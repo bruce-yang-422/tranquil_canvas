@@ -205,47 +205,69 @@ def parse_skip_images(skip_text: str, total_items: int) -> set[int]:
     return skipped
 
 
+def parse_images_list(images_text: str, total_items: int) -> list[int]:
+    indices: list[int] = []
+    for raw_part in images_text.split(","):
+        part = raw_part.strip()
+        if not part:
+            continue
+        try:
+            image_index = int(part)
+        except ValueError as exc:
+            raise ValueError("--images 必須是逗號分隔的數字，例如 8,11,13") from exc
+
+        if image_index < 1 or image_index > total_items:
+            raise ValueError(f"--images 必須介於 1 到 {total_items} 之間")
+        indices.append(image_index)
+
+    return indices
+
+
 def select_batch_items(
     batch_items: list[tuple[str | None, str]],
     selected_image: int | None,
     from_image: int | None,
     range_text: str | None,
     skip_images_text: str | None,
+    images_list_text: str | None = None,
 ) -> list[tuple[str | None, str]]:
     total_items = len(batch_items)
 
-    if selected_image is not None:
+    if images_list_text is not None:
+        indices = parse_images_list(images_list_text, total_items)
+        selected = [batch_items[i - 1] for i in indices]
+    elif selected_image is not None:
         if selected_image < 1 or selected_image > total_items:
             raise ValueError(f"--image 必須介於 1 到 {total_items} 之間")
-        start = selected_image
-        end = selected_image
+        selected = [batch_items[selected_image - 1]]
     elif range_text is not None:
         start, end = parse_image_range(range_text, total_items)
+        selected = [
+            item
+            for index, item in enumerate(batch_items, start=1)
+            if start <= index <= end
+        ]
     elif from_image is not None:
         if from_image < 1 or from_image > total_items:
             raise ValueError(f"--from-image 必須介於 1 到 {total_items} 之間")
-        start = from_image
-        end = total_items
+        selected = [
+            item
+            for index, item in enumerate(batch_items, start=1)
+            if index >= from_image
+        ]
     else:
-        start = 1
-        end = total_items
+        selected = list(batch_items)
 
-    selected = [
-        item
-        for index, item in enumerate(batch_items, start=1)
-        if start <= index <= end
-    ]
-
-    if skip_images_text:
+    if skip_images_text and images_list_text is None:
         skipped = parse_skip_images(skip_images_text, total_items)
         selected = [
             item
             for index, item in enumerate(batch_items, start=1)
-            if start <= index <= end and index not in skipped
+            if item in selected and index not in skipped
         ]
 
     if not selected:
-        raise ValueError("篩選後沒有任何要輸出的圖片，請檢查 --image / --from-image / --range / --skip-images")
+        raise ValueError("篩選後沒有任何要輸出的圖片，請檢查 --image / --images / --from-image / --range / --skip-images")
 
     return selected
 
@@ -364,6 +386,10 @@ if __name__ == "__main__":
         help="批次模式只輸出指定範圍，例如 2-5",
     )
     parser.add_argument(
+        "--images",
+        help="批次模式只輸出指定的幾張，逗號分隔，例如 8,11,13",
+    )
+    parser.add_argument(
         "--skip-images",
         help="批次模式跳過指定張數，格式例如 3,7,9",
     )
@@ -396,6 +422,7 @@ if __name__ == "__main__":
                 args.from_image,
                 args.image_range,
                 args.skip_images,
+                args.images,
             )
             style_prompt = markdown_style_prompt
             if args.style_file:

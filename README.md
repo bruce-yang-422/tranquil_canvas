@@ -44,6 +44,7 @@ python main.py
 | `--style-file` | — | 批次模式外部共用 style prompt 檔 |
 | `--batch-prefix` | `image` | 批次模式未指定檔名時的輸出前綴 |
 | `--image` | — | 批次模式只輸出指定的第幾張（從 1 開始） |
+| `--images` | — | 批次模式只輸出指定的幾張，逗號分隔，例如 `8,11,13` |
 | `--from-image` | — | 批次模式從指定張數開始一路輸出到最後 |
 | `--range` | — | 批次模式只輸出指定範圍，例如 `2-5` |
 | `--skip-images` | — | 批次模式跳過指定張數，例如 `3,7,9` |
@@ -114,6 +115,9 @@ python main.py -b infographic-example.md -s 1024x1024 -q low --output-dir output
 
 # 批次模式：只重跑第 5 張
 python main.py -b infographic_God_Complex.md --image 5 -s 1024x1024 -q low --output-dir output/infographic_god_complex
+
+# 批次模式：只重跑指定的幾張（不連續）
+python main.py -b infographic_God_Complex.md --images 8,11,13 -s 1024x1024 -q low --output-dir output/infographic_god_complex
 
 # 批次模式：從第 5 張開始一路重跑到最後
 python main.py -b infographic_God_Complex.md --from-image 5 -s 1024x1024 -q low --output-dir output/infographic_god_complex
