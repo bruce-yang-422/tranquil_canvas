@@ -67,11 +67,15 @@ python main.py
 | `1440x2048` | 直式 A2 高解析 | |
 | `2048x1152` | **橫式 16:9** | 桌面桌布、影片封面 |
 | `1152x2048` | **直式 9:16** | 海報、手機桌布 |
+| `2048x880` | **橫式 21:9** | 超寬電影感，適合場景橫幅 |
+| `880x2048` | **直式 9:21** | 超高直式，實驗性 |
 | `2048x2048` | 2K 正方形 | 實驗性 |
 | `3840x2720` | 橫式 A2 超高解析 | 實驗性 |
 | `2720x3840` | 直式 A2 超高解析 | 實驗性 |
 | `3840x2160` | 4K 橫式 | 實驗性 |
 | `2160x3840` | 4K 直式 | 實驗性，最大解析度 |
+| `3840x1648` | **4K 橫式 21:9** | 超寬 4K 電影感，實驗性 |
+| `1648x3840` | **4K 直式 9:21** | 超高 4K 直式，實驗性 |
 
 > 限制：最大邊 3840px，長寬比不超過 3:1，尺寸須為 16px 的倍數。
 
@@ -128,6 +132,10 @@ python main.py -b infographic_God_Complex.md --range 2-5 -s 1024x1024 -q low --o
 
 # 批次模式：全部重跑，但跳過第 3、7、9 張
 python main.py -b infographic_God_Complex.md --skip-images 3,7,9 -s 1024x1024 -q low --output-dir output/infographic_god_complex
+
+# 21:9 超寬電影感橫式
+python main.py -s 2048x880  -q medium -o cinematic_wide.png
+python main.py -s 3840x1648 -q high   -o cinematic_wide_4k.png
 
 # 2K / 4K（實驗性）
 python main.py -s 2048x2048 -q high -o 2k.png

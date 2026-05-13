@@ -1,0 +1,29 @@
+Photorealistic cinematic 9:16 vertical movie poster. Live-action Taiwanese xianxia fantasy martial arts style. Anamorphic lens, eye-level with a subtle low-angle tilt, mid-to-full body framing with dramatic depth of field.
+
+CRITICAL FACE REQUIREMENT: The face must look like a REAL LIVING HUMAN BEING photographed on camera — absolutely NOT a wax figure, NOT a BJD doll, NOT a mannequin, NOT a puppet, NOT CGI skin, NOT Stable Diffusion smooth render, NOT anime, NOT illustration. This is the most important instruction in this prompt.
+
+Skin: Real human skin has texture — visible pores especially around the nose and cheeks, slight natural unevenness, micro skin lines around the eyes and mouth, natural color variation (slightly warmer around the cheeks, cooler at the temples). The skin must NOT be uniformly smooth or plastic-looking.
+
+Eyes: Real human eyes have depth — the iris has layered color and fiber patterns, the whites have subtle natural red veining, the eyelids have real skin folds and lash root texture. Eyes must look wet, alive, and three-dimensional — not flat painted circles.
+
+Face structure: Natural slight asymmetry of a real human face. Genuine muscle tension around the jaw, brow, and cheeks. The face looks like it belongs to a real East Asian male actor in his 30s with refined, androgynous bone structure — photographed by a National Geographic portrait photographer using Sony A7R V, 85mm f/1.4 lens, Rembrandt lighting setup. Film still from a high-budget live-action production.
+
+FACE AND EXPRESSION: A face of cold, refined, androgynous beauty — porcelain-pale flawless skin, high and sculpted bone structure. His eyes are dramatically outlined with HEAVY BLACK EYE MAKEUP — deep kohl-lined lids, giving his gaze a piercing, theatrical intensity. His EYEBROWS have a distinctive SWIRLING SPIRAL PATTERN (漩渦眉) — the brow hairs curve inward in a unique swirl, a mark of supreme wisdom. A small VERMILION CINNABAR MARK (硃砂痣) sits precisely between his brows, deep red. His expression is cold, dignified, and composed — the face of a sage who sees through all things and judges nothing. Lips closed, gaze forward.
+
+HAIR AND CROWN: Long flowing WHITE HAIR — pure silver-white, straight and silken — cascades from beneath his crown past his shoulders down to his waist. He wears an ELABORATE ORNATE CROWN HEADDRESS — a tall decorative crown structure with fine metalwork, gemstone inlays, decorative hairpins extending outward from the sides, and pendant ornaments dangling from the crown edges. Fine white sideburn wisps (鬢髮) frame his temples.
+
+OUTFIT: Richly layered ornate robes — dominant color is WHITE, with PURPLE and LAVENDER as accent colors. The outer robe is pure white silk with large-scale lotus floral embroidery and patterns in purple and lavender. All borders, hems, sleeve edges, and trim details are purple — not the base fabric. The inner layers are also white. Wide sleeves billow gently. The overall silhouette is pale, soft, and ethereal — white dominates the entire figure, with purple accents appearing only at the edges, embroidery, and decorative details. Flowing, wide-sleeved, aristocratic Taoist ceremonial layering.
+
+POSE: A composed, authoritative standing pose. One hand rests lightly on the hilt of the PRAJNA SWORD (般若劍) — a long elegant sword held vertically at his side, the ornate crossguard featuring dragon motifs, handle and guard decorated with purple and gold gem inlays, the blade long and straight with a faint inner luminescence. The other hand is relaxed at his side or lightly raised. His body faces three-quarters toward the camera. He does not move — he simply exists, and that is enough.
+
+BACKGROUND: A serene, vast landscape — moonlit ancient mountain peaks partially veiled in flowing clouds and mist, deep indigo and violet night sky, a large full moon partially visible through thin clouds. The atmosphere is still and majestic. Soft ambient light from the moon and stars fills the background with a cool blue-silver glow.
+
+LIGHTING: Soft moonlight from above and slightly behind, creating a cool silver rim light along his crown, white hair, and the shoulders of his blue robe. A subtle warm fill light from the front to illuminate his face and bring out the porcelain skin tone, the swirl eyebrows, and the cinnabar mark. The Prajna Sword catches the moonlight along its blade. The blue silk brocade shimmers with depth and richness.
+
+CAMERA: Anamorphic lens, approximately 50mm equivalent focal length, eye-level with a subtle 5-degree upward tilt, mid-body to full-body framing, shallow depth of field keeping the subject razor-sharp with the mountain-cloud background softly blurred.
+
+COLOR GRADE: Soft white and lavender-purple tones throughout. The subject is predominantly white and pale — a luminous figure against the background. Purple accents on robe trim, embroidery, and crown details. Cool silver-white highlights on hair. The overall palette is ethereal, pale, and serene — like white lotus in moonlight.
+
+On the LEFT side of the poster, vertical traditional Chinese calligraphy in silver-gold ink brushstroke style. Main title (largest): "素還真". Subtitle in smaller script: "半神半聖亦半仙，全儒全道是全賢". Text verbatim, perfectly legible, classical elegant brushwork, no extra characters, no distortion.
+
+MOOD: Timeless, regal, untouchable. A sage who stands above the chaos of the world — not because he is distant, but because he has already seen it all and chosen righteousness anyway. Still water runs deep.
