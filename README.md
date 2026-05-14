@@ -180,6 +180,57 @@ city_night|neon-lit street at night, cyberpunk style
 執行時每張圖會自動合併 `# style` + 對應的 `# image` 區塊再送出，
 區塊內容可選擇包在 ` ``` ` 代碼塊內，程式會自動去除外層符號。
 
+#### 標題規則
+
+| 標題 | 說明 |
+| ---- | ---- |
+| `# style` | 共用風格，全批次每張都會加在 prompt 最前面；只能出現一次，可省略 |
+| `# image xx` | 一個區塊 = 一張圖；`xx` 可以是任意文字，會被用來命名輸出檔案 |
+
+- 標題只允許 `style` 或 `image ...` 開頭，其他標題（包含大標題說明行）會造成解析錯誤。
+- 檔案裡不能有其他 `#` 開頭的行；若需要標題文字，寫進 ` ``` ` 區塊內即可。
+- 使用 `---` 水平分隔線隔開區塊可提升可讀性，不影響解析。
+
+#### 區塊內容格式
+
+每個 `# image xx` 底下的內容支援兩種寫法：
+
+**純文字**（直接寫 prompt）：
+
+```md
+# image 01
+A serene mountain lake at dawn, misty atmosphere, soft light.
+```
+
+**代碼塊包裹**（用 ` ``` ` 包住，適合多行結構化 prompt）：
+
+````md
+# image 01
+```
+Layout:
+- Center headline: 「標題文字」white ExtraBold
+- Background: deep navy #042C53
+- Bottom: pagination dots, 11 total
+
+Colors: Navy background, white text, amber #EF9F27 accent.
+Goal: Attract attention, establish series identity.
+```
+````
+
+兩種寫法產生的輸出相同；代碼塊外層的 ` ``` ` 會被自動剝除。
+
+#### 輸出檔名對應
+
+`# image xx` 的 `xx` 部分會被清理後用作檔名：
+
+| 標題 | 輸出檔名 |
+| ---- | -------- |
+| `# image 01` | `image_01.png` |
+| `# image cover` | `image_cover.png` |
+| `# image 封面-主視覺` | `image__.png`（非 ASCII 字元會被移除） |
+
+> 建議標題只用英數字、連字號 `-`、底線 `_`，避免中文或特殊符號造成無意義的檔名。
+
 ## 費用參考（gpt-image-2）
 
 官方標準尺寸定價：
