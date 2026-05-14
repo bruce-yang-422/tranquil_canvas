@@ -52,6 +52,7 @@ SIZES = [
     "3840x1648",
     "1648x3840",
 ]
+SIZE_CHOICES = ["auto", *SIZES]
 QUALITIES = ["low", "medium", "high", "auto"]
 DEFAULT_INPUT_DIR = Path("input")
 DEFAULT_OUTPUT_DIR = Path("output")
@@ -414,7 +415,13 @@ if __name__ == "__main__":
         default=str(DEFAULT_OUTPUT_DIR),
         help="輸出資料夾（預設: output）",
     )
-    parser.add_argument("-s", "--size", default="1024x1024", choices=SIZES, help="圖片尺寸")
+    parser.add_argument(
+        "-s",
+        "--size",
+        default="1024x1024",
+        choices=SIZE_CHOICES,
+        help="圖片尺寸；可用 auto 讓模型自動決定",
+    )
     parser.add_argument("-q", "--quality", default="medium", choices=QUALITIES, help="畫質")
     args = parser.parse_args()
 

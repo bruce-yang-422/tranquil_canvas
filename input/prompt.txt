@@ -1,77 +1,19 @@
-<task>
-生成一張 9:16 直式電影感人像海報。
-主角為《倚天屠龍記》中的趙敏。
-風格為「真實攝影 × 元末武俠 × 蒙古郡主 × 華貴英氣」。
-</task>
+Scene:
+A fictional Japanese glossy DVD jacket spread shown as one flat scanned package design, horizontal A4 ratio, target size 2480x1754 px. Clearly divide the layout into three sections: left back cover 44%, center spine 6%, right front cover 50%. The graphic design must look like a modern Japanese premium DVD package, while the photography feels like a luxurious Chinese classical beauty shoot.
 
-<era_background>
-時代背景為元朝末年，天下動盪，明教、六大派與朝廷勢力彼此角力。
-趙敏是汝陽王府郡主，出身蒙古貴族，聰明果決，善於布局，既有王府貴氣，也有江湖女子的英颯與危險魅力。
-</era_background>
+Subject:
+One fictional adult East Asian woman, age 25+, original character only. She has black hair in an ornate traditional Chinese coiffure, gold hairpins, jade accessories, refined makeup, expressive eyes, realistic skin texture, and a confident alluring smile. She wears a luxurious Chinese silk costume in deep crimson, jade green, ivory, and gold, with clear Chinese hanfu / qipao-inspired construction: cross-collar or Chinese-style neckline details, frog buttons, embroidered brocade panels, fitted waist, elegant off-shoulder styling, and a graceful body-contouring silhouette. The styling should feel like a glamorous Japanese commercial cover shoot, polished, refined, and alluring, while remaining fully covered, opaque, and non-explicit. It must remain unmistakably Chinese in costume design, never Japanese kimono or yukata.
 
-<subject>
-趙敏，成年女性，20歲出頭。
-她是蒙古郡主，身份尊貴，氣質明豔、高貴、聰慧、強勢。
-眼神銳利靈動，直視鏡頭，帶有掌控局勢的自信與一點挑釁感。
-表情從容，嘴角可有極淡的笑意，像已經看穿對手心思。
-整體感覺是美麗、危險、機敏、不可小看。
-</subject>
+Important details:
+Right front cover: one large half-body hero portrait, glossy commercial retouching, warm studio light, shallow depth of field. Her expression should feel poised and alluring, with strong eye contact, elegant posture, and subtle inviting body language suitable for a Japanese commercial cover, but still non-explicit. The front cover should feel commercial and sensational, but text density must be controlled for legibility. Use only a few large readable text elements and keep the rest as small decorative microtext or abstract layout accents. The only clearly readable front-cover text should be: “PRIVATE FILE”, “禁断艶華”, “潘金蓮”, “PAN KINREN”, plus 1 short tagline “視線だけで、夜がほどける。” and 2-3 circular badges chosen from: “特別収録”, “完全保存版”, “濃密版”, “初回限定”. Avoid paragraphs, avoid too many separate slogans, and avoid excessive tiny readable text.
 
-<appearance>
-五官明豔精緻，輪廓帶東方古典美與蒙古貴族英氣。
-眉眼清亮銳利，鼻樑秀挺，唇色自然偏紅。
-肌膚白皙細膩，妝容精緻但不濃重。
-髮型為元代蒙古貴族女子風格，長髮半束半披，搭配細辮與低調金飾、玉飾或紅寶石髮飾。
-造型華貴但俐落，不做宮廷妃嬪感。
-</appearance>
+Left back cover: busy Japanese DVD back-cover layout with one smaller full-body photo, 8–12 small non-explicit preview thumbnails, short caption fragments, fictional runtime/spec boxes, DVD icons, product code, barcode-like area, and legal-style footer text. Use Chinese-style scenes: fan, tea table, carved screen, silk curtain, lattice window, jade pendant, warm lantern light. Most small text on the back cover should be treated as graphic design texture rather than fully readable sentences.
 
-<physique>
-身形高挑勻稱，腰線明顯，體態挺拔。
-上圍豐滿明顯，約 C 到 D cup 的視覺比例，胸腰對比清楚，但保持高級克制。
-腰身纖細，臀腿線條自然流暢，整體是豐潤明豔但不誇張的郡主型身材。
-姿態自信、穩定、有掌控感。
-</physique>
+Center spine:
+Slim vertical spine with vertical text: “PRIVATE FILE”, “禁断艶華”, “潘金蓮”, product code “DVD-241”.
 
-<outfit>
-穿元末蒙古貴族風格改良騎裝。
-主色為深紅、墨黑、暗金與孔雀藍，可帶少量白色皮草邊。
-上身剪裁合身，突顯豐滿上圍、纖細腰線與挺拔身姿。
-外層為短披肩或貴族騎裝外袍，材質可用厚絲緞、皮革、細繡布料與輕薄金線紋樣。
-腰間束寬皮革腰帶或織金腰封，掛有玉佩或令牌。
-整體服裝華貴、俐落、適合騎馬與指揮行動。
-</outfit>
+Use case:
+Fictional non-explicit Japanese commercial DVD jacket concept design. Chinese classical beauty photography with premium Japanese packaging layout. Photorealistic print-ready glossy cover spread.
 
-<action>
-趙敏站在畫面中央偏右，身體微微側轉，直視鏡頭。
-一手握著摺扇，另一手自然扶在腰間王府令牌旁。
-姿態從容優雅，像正在審視江湖局勢，也像下一秒就會下令出手。
-</action>
-
-<background_props>
-背景為汝陽王府外庭或元軍營帳前。
-可見蒙古戰旗、黑色戰馬、王府侍衛輪廓、遠處營帳與冷色天光。
-地面有青石、沙塵與馬蹄痕，空氣中帶微風與薄霧。
-道具包含摺扇、馬鞭、短刀、王府令牌、蒙古戰旗與黑色駿馬。
-整體背景要呈現權勢、軍事感與江湖陰謀感。
-</background_props>
-
-<composition>
-9:16 直式電影海報構圖。
-平視鏡頭，半身到膝上構圖，清楚呈現臉部、上身曲線、腰封與道具。
-趙敏是畫面核心，背景人物與戰馬保持模糊，營造淺景深。
-左側保留直式中文書法標題區。
-</composition>
-
-<text>
-左側加入直式中文書法。
-主標題：「趙敏」
-副標語：「明眸設局，萬里皆棋」
-字體為金色或淡金色行書，古典武俠海報風格。
-</text>
-
-<lighting>
-真實攝影質感，自然冷光與暖金色側光交錯。
-臉部光線精緻，突出她的聰慧眼神與貴族氣場。
-絲緞、皮革、金飾、髮絲、戰旗與馬匹毛髮細節清楚。
-整體畫面華貴、銳利、寫實，具有商業武俠電影海報質感。
-</lighting>
+Constraints:
+Quality high. Horizontal A4 ratio. Target size 2480x1754 px. Emphasize elegant fashion styling: bare shoulders are allowed, a tasteful neckline is allowed, and the silhouette can be more figure-hugging. Prioritize a Japanese commercial cover mood with polished glamour and strong eye contact, but keep the wardrobe unmistakably Chinese rather than Japanese. No kimono, no yukata, no obi, no Japanese shrine-maiden styling. Keep text count limited so typography stays clean and accurate: only the main title, name, romanized name, one short tagline, and 2-3 badges need to be clearly readable; other tiny text can be simplified or stylized. There must be no nudity, no visible nipples, no underboob, no genitals, no sexual acts, no explicit pose, no transparent clothing, no minors, no real actress likeness, no real AV studio logo, no SOD logo, no real barcode data, no watermark, no extra people, no pornographic thumbnails, no poster layout, no fashion magazine layout, no missing spine, no missing back cover, no sparse left side. Main title and key Japanese text must be readable.
