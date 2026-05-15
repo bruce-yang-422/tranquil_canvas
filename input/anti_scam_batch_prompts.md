@@ -383,18 +383,19 @@ Layout:
     「而是照 SOP 一步步把你帶進去」
     Small hand-drawn bracket decorations at quote corners
 
-- Center: 8-step horizontal arrow flow laid directly on slide background in TWO rows of 4, with hand-drawn sketchy arrows (→) between steps and a large hand-drawn curved arrow connecting the end of row 1 to the start of row 2.
+- Center: 8-step flow laid directly on slide background in TWO rows of 4. BOTH rows read strictly LEFT TO RIGHT (① → ② → ③ → ④, then ⑤ → ⑥ → ⑦ → ⑧). Between steps within each row: hand-drawn horizontal arrow (→). Connecting Row 1 to Row 2: a hand-drawn vertical downward arrow (↓) placed directly below Step ④, pointing down to Step ⑤ which is left-aligned below Step ①. Do NOT use a curved or reverse arrow — the transition is simply ↓ from ④ to ⑤.
     Each step: colored circle (~44px, perfect circle) + white icon + bold text label below circle (~16px #2C2416)
-    Row 1:
+    Row 1 (left to right):
       Step 1 — teal circle (#52A399) + hand-drawn person-wave icon: 「① 接觸」
-      Step 2 — forest green circle + hand-drawn handshake icon: 「② 建信任」
-      Step 3 — forest green circle + hand-drawn chat icon: 「③ 轉 LINE／私域」
-      Step 4 — amber circle + hand-drawn document icon: 「④ 給理由」
-    Row 2:
+      → Step 2 — forest green circle + hand-drawn handshake icon: 「② 建信任」
+      → Step 3 — forest green circle + hand-drawn chat icon: 「③ 轉 LINE／私域」
+      → Step 4 — amber circle + hand-drawn document icon: 「④ 給理由」
+      ↓ (vertical arrow below ④, leading down-left to ⑤)
+    Row 2 (left to right, aligned below Row 1):
       Step 5 — amber circle + hand-drawn timer icon: 「⑤ 催操作」
-      Step 6 — terracotta circle + hand-drawn coin-arrow icon: 「⑥ 要金流」
-      Step 7 — terracotta circle + hand-drawn plus-coin icon: 「⑦ 追加付款」
-      Step 8 — terracotta circle (#BC4A3C) + hand-drawn door-exit icon: 「⑧ 失聯或恐嚇」
+      → Step 6 — terracotta circle + hand-drawn coin-arrow icon: 「⑥ 要金流」
+      → Step 7 — terracotta circle + hand-drawn plus-coin icon: 「⑦ 追加付款」
+      → Step 8 — terracotta circle (#BC4A3C) + hand-drawn door-exit icon: 「⑧ 失聯或恐嚇」
     Colors progress from teal → green → amber → red conveying escalating danger
 
 - Below flow: Two side-by-side white cards:
