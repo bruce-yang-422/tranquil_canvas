@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>富國家 vs 窮個人：債務魔術懶人包</title>
+<style>
+  :root {
+    --red: #e53e3e;
+    --orange: #dd6b20;
+    --yellow: #d69e2e;
+    --green: #38a169;
+    --blue: #3182ce;
+    --purple: #805ad5;
+    --gray-900: #1a202c;
+    --gray-700: #2d3748;
+    --gray-500: #718096;
+    --gray-100: #f7fafc;
+    --gray-50: #f9fafb;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'PingFang TC', 'Microsoft JhengHei', 'Noto Sans TC', sans-serif;
+    background: #0f0f1a;
+    color: #e2e8f0;
+    line-height: 1.7;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    padding: 60px 24px 48px;
+    text-align: center;
+    border-bottom: 2px solid #2d4a7a;
+  }
+  .hero .tag {
+    display: inline-block;
+    background: rgba(229,62,62,0.2);
+    color: #fc8181;
+    border: 1px solid rgba(229,62,62,0.4);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(22px, 5vw, 42px);
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff 30%, #90cdf4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero .subtitle {
+    font-size: 15px;
+    color: #a0aec0;
+    max-width: 600px;
+    margin: 0 auto 32px;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .hero-stat {
+    text-align: center;
+  }
+  .hero-stat .num {
+    font-size: 32px;
+    font-weight: 900;
+    color: #63b3ed;
+    display: block;
+  }
+  .hero-stat .label {
+    font-size: 12px;
+    color: #718096;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* SECTION */
+  section {
+    padding: 48px 0 24px;
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .section-label .icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .section-label h2 {
+    font-size: 20px;
+    font-weight: 800;
+  }
+  .section-label .num-badge {
+    font-size: 11px;
+    color: #718096;
+    margin-left: 8px;
+  }
+
+  /* CORE CONCEPT */
+  .core-concept {
+    background: linear-gradient(135deg, rgba(49,130,206,0.15), rgba(128,90,213,0.15));
+    border: 1px solid rgba(49,130,206,0.3);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+  .core-concept .big-text {
+    font-size: clamp(16px, 3vw, 22px);
+    font-weight: 700;
+    color: #90cdf4;
+    margin-bottom: 12px;
+  }
+  .core-concept p {
+    font-size: 14px;
+    color: #a0aec0;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  /* CARDS */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .card {
+    background: #1a202c;
+    border-radius: 14px;
+    padding: 22px;
+    border: 1px solid #2d3748;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: #4a5568; }
+  .card .card-icon { font-size: 28px; margin-bottom: 12px; }
+  .card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #e2e8f0;
+  }
+  .card p {
+    font-size: 13px;
+    color: #a0aec0;
+    line-height: 1.6;
+  }
+  .card.red { border-left: 3px solid var(--red); }
+  .card.orange { border-left: 3px solid var(--orange); }
+  .card.yellow { border-left: 3px solid var(--yellow); }
+  .card.blue { border-left: 3px solid var(--blue); }
+  .card.purple { border-left: 3px solid var(--purple); }
+  .card.green { border-left: 3px solid var(--green); }
+
+  /* FLOW DIAGRAM */
+  .flow {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin: 24px 0;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .flow-step {
+    flex: 1;
+    min-width: 140px;
+    background: #1a202c;
+    border: 1px solid #2d3748;
+    border-radius: 12px;
+    padding: 18px 14px;
+    text-align: center;
+    position: relative;
+  }
+  .flow-step .step-num {
+    width: 26px;
+    height: 26px;
+    background: var(--blue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    margin: 0 auto 10px;
+  }
+  .flow-step h4 { font-size: 13px; font-weight: 700; color: #e2e8f0; margin-bottom: 6px; }
+  .flow-step p { font-size: 11px; color: #718096; }
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    color: #4a5568;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  /* TABLE */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 13px;
+  }
+  .data-table th {
+    background: #2d3748;
+    color: #90cdf4;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+  .data-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #2d3748;
+    color: #cbd5e0;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: rgba(255,255,255,0.03); }
+  .data-table .highlight { color: #68d391; font-weight: 700; }
+  .data-table .warn { color: #fc8181; font-weight: 700; }
+
+  /* STAT BLOCKS */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .stat-block {
+    background: #1a202c;
+    border: 1px solid #2d3748;
+    border-radius: 12px;
+    padding: 18px 14px;
+    text-align: center;
+  }
+  .stat-block .val {
+    font-size: 26px;
+    font-weight: 900;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .stat-block .desc {
+    font-size: 11px;
+    color: #718096;
+    line-height: 1.4;
+  }
+  .val.red { color: #fc8181; }
+  .val.green { color: #68d391; }
+  .val.blue { color: #63b3ed; }
+  .val.orange { color: #f6ad55; }
+  .val.yellow { color: #f6e05e; }
+
+  /* QUOTE */
+  .quote-box {
+    background: rgba(113,128,150,0.1);
+    border-left: 4px solid #4a5568;
+    border-radius: 0 12px 12px 0;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-style: italic;
+    color: #a0aec0;
+    font-size: 14px;
+  }
+  .quote-box cite {
+    display: block;
+    margin-top: 10px;
+    font-style: normal;
+    font-size: 12px;
+    color: #718096;
+  }
+
+  /* PILL LIST */
+  .pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0;
+  }
+  .pill {
+    background: rgba(49,130,206,0.15);
+    border: 1px solid rgba(49,130,206,0.3);
+    color: #90cdf4;
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .pill.red {
+    background: rgba(229,62,62,0.15);
+    border-color: rgba(229,62,62,0.3);
+    color: #fc8181;
+  }
+  .pill.orange {
+    background: rgba(221,107,32,0.15);
+    border-color: rgba(221,107,32,0.3);
+    color: #f6ad55;
+  }
+
+  /* WARNING BOX */
+  .warning-box {
+    background: rgba(229,62,62,0.1);
+    border: 1px solid rgba(229,62,62,0.3);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .warning-box h4 {
+    color: #fc8181;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .warning-box ul {
+    list-style: none;
+    display: grid;
+    gap: 8px;
+  }
+  .warning-box li {
+    font-size: 13px;
+    color: #e2e8f0;
+    padding-left: 18px;
+    position: relative;
+  }
+  .warning-box li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: #fc8181;
+  }
+
+  /* SUCCESS BOX */
+  .info-box {
+    background: rgba(56,161,105,0.1);
+    border: 1px solid rgba(56,161,105,0.3);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .info-box h4 {
+    color: #68d391;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .info-box p, .info-box li {
+    font-size: 13px;
+    color: #e2e8f0;
+  }
+
+  /* CONCLUSION */
+  .conclusion {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border: 1px solid #2d4a7a;
+    border-radius: 16px;
+    padding: 36px;
+    margin: 32px 0;
+  }
+  .conclusion h3 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: #90cdf4;
+    text-align: center;
+  }
+  .conclusion-items {
+    display: grid;
+    gap: 14px;
+  }
+  .conclusion-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .conclusion-item .ci-num {
+    width: 28px;
+    height: 28px;
+    background: rgba(49,130,206,0.3);
+    border: 1px solid rgba(49,130,206,0.5);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #90cdf4;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .conclusion-item .ci-text {
+    font-size: 13px;
+    color: #cbd5e0;
+    line-height: 1.6;
+  }
+  .conclusion-item .ci-text strong {
+    color: #e2e8f0;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #2d3748, transparent);
+    margin: 40px 0;
+  }
+
+  /* FOOTER */
+  footer {
+    background: #0d1117;
+    border-top: 1px solid #2d3748;
+    padding: 28px;
+    text-align: center;
+    font-size: 12px;
+    color: #718096;
+  }
+  footer a { color: #4a90e2; text-decoration: none; }
+
+  /* MOBILE */
+  @media (max-width: 600px) {
+    .flow { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); align-self: center; }
+    .hero-stats { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="tag">財政分析 · 懶人包</div>
+  <h1>富國家 vs 窮個人<br>債務轉移的隱形魔術</h1>
+  <p class="subtitle">當宏觀數據顯示5%經濟成長，你的薪水卻縮水、公車不來、電費上漲——這不是錯覺，這是一場精密設計的財政術</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="num">10兆</span>
+      <span class="label">化債規模（人民幣）</span>
+    </div>
+    <div class="hero-stat">
+      <span class="num">5%</span>
+      <span class="label">GDP官方成長率</span>
+    </div>
+    <div class="hero-stat">
+      <span class="num">2000億</span>
+      <span class="label">全國公交年虧損</span>
+    </div>
+    <div class="hero-stat">
+      <span class="num">68.7%</span>
+      <span class="label">政府負債率</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 核心概念 -->
+  <section>
+    <div class="core-concept">
+      <div class="big-text">🎩 債務不會消失，只會換主人</div>
+      <p>國家的欠債，最終都要有人還。當政府找不到冤大頭，就用三招把帳單悄悄轉給你：<strong style="color:#90cdf4">壓低你的利息收益、砍掉你的公共服務、拉高你的日常開銷</strong>。這就是財政吸管效應。</p>
+    </div>
+
+    <!-- 三大轉移路徑 -->
+    <div class="section-label">
+      <div class="icon" style="background:rgba(229,62,62,0.2)">🔄</div>
+      <h2 style="color:#fc8181">債務如何從政府轉移到你身上？</h2>
+    </div>
+    <div class="cards">
+      <div class="card red">
+        <div class="card-icon">🏦</div>
+        <h3>金融壓抑</h3>
+        <p>壓低銀行存款利率，把你本來能賺到的利息「悄悄捐給」國有負債部門。這是對儲戶徵收的隱形稅。</p>
+      </div>
+      <div class="card orange">
+        <div class="card-icon">🚌</div>
+        <h3>公共服務縮減</h3>
+        <p>地方政府省錢還債，公車停跑、教育縮編、基層醫療削減——服務沒了，但稅還在繳。</p>
+      </div>
+      <div class="card yellow">
+        <div class="card-icon">💡</div>
+        <h3>行政性漲價</h3>
+        <p>水費、電費、瓦斯費一起漲，把能源國企的債務窟窿直接從你每月帳單裡補。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 章一：化債方案 -->
+  <section>
+    <div class="section-label">
+      <div class="icon" style="background:rgba(49,130,206,0.2)">📋</div>
+      <h2>章一：10兆化債是怎麼一回事？</h2>
+    </div>
+
+    <div class="quote-box">
+      「這不是中央政府買單，而是一場大規模的<strong>會計置換</strong>——地方政府用低利率長期官方債券，去換掉高成本的隱性借款。債務本金一分沒少，只是把爆炸時間點往後推。」
+      <cite>— 卡內基國際和平基金會分析</cite>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>方案組成</th>
+          <th>規模</th>
+          <th>時程</th>
+          <th>白話說明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>地方專項債額度上調</td>
+          <td class="highlight">6兆元</td>
+          <td>2024–2026</td>
+          <td>用官方債換隱性債，每年2兆</td>
+        </tr>
+        <tr>
+          <td>新增專項債化債額度</td>
+          <td class="highlight">4兆元</td>
+          <td>2024–2028</td>
+          <td>每年挪8000億還舊帳</td>
+        </tr>
+        <tr>
+          <td>隱性債務餘額</td>
+          <td class="warn">10.5兆元</td>
+          <td>2024年末</td>
+          <td>還在的，只是換了馬甲</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 傳導鏈條 -->
+    <div class="section-label" style="margin-top:32px">
+      <div class="icon" style="background:rgba(128,90,213,0.2)">⛓️</div>
+      <h2 style="font-size:17px">左手倒右手：債務怎麼進入銀行？</h2>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <h4>地方政府</h4>
+        <p>融資平台欠了一堆高息短債</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <h4>人行指令</h4>
+        <p>要求銀行展期、降息、不列壞帳</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <h4>銀行吸收</h4>
+        <p>壞帳被歸類「正常貸款」，利潤空間被壓縮</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <h4>全民買單</h4>
+        <p>存款利率降低、私企信貸減少、你的錢貶值</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 章二：宏觀繁榮 -->
+  <section>
+    <div class="section-label">
+      <div class="icon" style="background:rgba(56,161,105,0.2)">📈</div>
+      <h2>章二：數據為什麼看起來那麼好？</h2>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-block">
+        <span class="val green">+5%</span>
+        <span class="desc">2024 GDP 官方成長率（目標達成）</span>
+      </div>
+      <div class="stat-block">
+        <span class="val green">1289萬輛</span>
+        <span class="desc">新能源車年產量（全球第一）</span>
+      </div>
+      <div class="stat-block">
+        <span class="val blue">+19.3%</span>
+        <span class="desc">汽車出口成長</span>
+      </div>
+      <div class="stat-block">
+        <span class="val orange">40.9%</span>
+        <span class="desc">新能源車市場滲透率</span>
+      </div>
+    </div>
+
+    <div class="warning-box">
+      <h4>⚠️ 但這些數字的背後是…</h4>
+      <ul>
+        <li>新能源車「內卷」——廠商打價格戰，獲利大幅縮水</li>
+        <li>銀行資金定向輸血頭部車企，私企借不到錢</li>
+        <li>製造業工人工時更長、薪資更不穩定</li>
+        <li>GDP成長主要靠投資堆疊，消費內需沒有真正回溫</li>
+        <li>高鐵、電網等宏觀資產靠借錢建成，票價漲20%還利息</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 章三：微觀崩塌 -->
+  <section>
+    <div class="section-label">
+      <div class="icon" style="background:rgba(229,62,62,0.2)">📉</div>
+      <h2 style="color:#fc8181">章三：你的荷包真實感受</h2>
+    </div>
+
+    <div class="cards">
+      <div class="card red">
+        <div class="card-icon">🏦</div>
+        <h3>銀行員工「雪崩式減薪」</h3>
+        <p>淨息差縮至1.69%，基層員工月薪從<strong>過萬降至不足千元</strong>，還出現「反向討薪」追回已發的績效。</p>
+      </div>
+      <div class="card orange">
+        <div class="card-icon">👔</div>
+        <h3>公務員也難逃</h3>
+        <p>廣東、浙江等省公務員年薪減少5-6萬，處長級超過10萬；廣東基層民警從年薪30萬降至20萬。</p>
+      </div>
+      <div class="card purple">
+        <div class="card-icon">🏠</div>
+        <h3>房產財富縮水</h3>
+        <p>房價每跌10%，一二線城市居民消費就縮1.6%。「負財富效應」讓中產階級不敢花錢。</p>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <h4>📊 2024年居民收入數字怎麼看？</h4>
+      <p>全國人均可支配收入 <strong>41,314元</strong>，實際增長5.1%——聽起來不錯？但：</p>
+      <ul style="list-style:none; margin-top:10px; display:grid; gap:8px">
+        <li style="font-size:13px; padding-left:16px; position:relative"><span style="position:absolute;left:0;color:#68d391">▸</span> 中位數收入只有34,707元（平均數的84%），貧富差距大</li>
+        <li style="font-size:13px; padding-left:16px; position:relative"><span style="position:absolute;left:0;color:#68d391">▸</span> 2024 Q1消費傾向62.2%，低於去年63.3%——人民越賺越不敢花</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 章四：生活成本 -->
+  <section>
+    <div class="section-label">
+      <div class="icon" style="background:rgba(221,107,32,0.2)">💸</div>
+      <h2 style="color:#f6ad55">章四：生活成本如何被悄悄墊高？</h2>
+    </div>
+
+    <p style="font-size:13px; color:#a0aec0; margin-bottom:20px">2024年土地出讓收入下滑12.2%，地方政府開始對日常生活「加稅」。</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>上海 2024 收費項目</th>
+          <th>第一階梯</th>
+          <th>最高階梯</th>
+          <th>備注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>居民用水</td>
+          <td class="warn">4.05 元/m³</td>
+          <td class="warn">8.79 元/m³</td>
+          <td>含大幅上調的污水處理費</td>
+        </tr>
+        <tr>
+          <td>居民用電（峰）</td>
+          <td class="warn">0.617 元/kWh</td>
+          <td class="warn">0.977 元/kWh</td>
+          <td>峰谷差距擴大，變相增費</td>
+        </tr>
+        <tr>
+          <td>居民燃氣</td>
+          <td class="warn">3.00 元/m³</td>
+          <td class="warn">4.20 元/m³</td>
+          <td>上調後長期維持高位</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 公交崩塌 -->
+    <div class="section-label" style="margin-top:32px">
+      <div class="icon" style="background:rgba(113,128,150,0.2)">🚌</div>
+      <h2 style="font-size:17px">公共交通的系統性潰敗</h2>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-block">
+        <span class="val red">2000億</span>
+        <span class="desc">全國公交年虧損額（人民幣）</span>
+      </div>
+      <div class="stat-block">
+        <span class="val orange">5.7元</span>
+        <span class="desc">每公里運營成本</span>
+      </div>
+      <div class="stat-block">
+        <span class="val yellow">3.2元</span>
+        <span class="desc">每公里票款收入（嚴重倒掛）</span>
+      </div>
+      <div class="stat-block">
+        <span class="val red">24條</span>
+        <span class="desc">北京2024年裁撤公車路線</span>
+      </div>
+    </div>
+
+    <div class="warning-box">
+      <h4>🫥 誰是最終受害者？</h4>
+      <ul>
+        <li>老年人、學生、低收入者——依賴公交的族群被迫改騎電動車或搭更貴的網約車</li>
+        <li>這筆額外支出被統計為「消費增長」，實際上是被逼出來的被動開銷</li>
+        <li>高鐵票價2024年漲20%，同樣是在填鐵路債務的坑</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 章五：社保稀釋 -->
+  <section>
+    <div class="section-label">
+      <div class="icon" style="background:rgba(128,90,213,0.2)">🏥</div>
+      <h2 style="color:#b794f4">章五：社保悄悄縮水了</h2>
+    </div>
+
+    <div class="cards">
+      <div class="card purple">
+        <div class="card-icon">💊</div>
+        <h3>醫保帳戶資金挪移</h3>
+        <p>門診共濟改革把個人帳戶資金撥入統籌基金。退休人員每月可動用的錢減少了——官方說「惠及11億人次」，退休族說「我的帳戶縮水了」。</p>
+      </div>
+      <div class="card blue">
+        <div class="card-icon">⏰</div>
+        <h3>延遲退休的心理重擊</h3>
+        <p>退休年齡往後延，基礎養老金每月只多<strong>20元</strong>。工作要做更久，未來收益更不確定，「捂緊錢包」成為合理反應。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 章六：地緣政治 -->
+  <section>
+    <div class="section-label">
+      <div class="icon" style="background:rgba(56,161,105,0.2)">🌏</div>
+      <h2>章六：強硬外交是為了轉移視線？</h2>
+    </div>
+
+    <div class="cards">
+      <div class="card green">
+        <div class="card-icon">🚗</div>
+        <h3>出口是最後救命稻草</h3>
+        <p>國內需求低迷，龐大產能必須推向全球。2024年汽車出口增19.3%。出口受阻（歐盟加徵關稅）就採取更強硬的外交姿態維護市場。</p>
+      </div>
+      <div class="card blue">
+        <div class="card-icon">⚡</div>
+        <h3>財政資源戰略性傾斜</h3>
+        <p>地方財政極緊，但電網投資6000億、核能、量子通信繼續砸錢——「大炮」優先於「黃油」，宏觀威懾力蓋過民生改善。</p>
+      </div>
+    </div>
+
+    <div class="quote-box">
+      「國家的外部強大，成為凝聚民心的工具，轉移了公眾對內部薪酬縮減與公共服務退化的注意力。」
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 結論 -->
+  <section>
+    <div class="conclusion">
+      <h3>📌 四大結論 — 一分鐘記住</h3>
+      <div class="conclusion-items">
+        <div class="conclusion-item">
+          <div class="ci-num">1</div>
+          <div class="ci-text">
+            <strong>債務只是換了身分，沒有消失</strong>
+            10兆化債是會計置換，最終由銀行體系與全民的金融壓抑來買單。
+          </div>
+        </div>
+        <div class="conclusion-item">
+          <div class="ci-num">2</div>
+          <div class="ci-text">
+            <strong>宏觀繁榮是政策強行催化的結果</strong>
+            新能源車奇跡掩蓋了製造業微利化與體制內減薪的廣泛痛苦。
+          </div>
+        </div>
+        <div class="conclusion-item">
+          <div class="ci-num">3</div>
+          <div class="ci-text">
+            <strong>個體財富正被「制度性抽真空」</strong>
+            漲公用事業、砍公交補貼、改醫保——每一項都是從你口袋取錢。
+          </div>
+        </div>
+        <div class="conclusion-item">
+          <div class="ci-num">4</div>
+          <div class="ci-text">
+            <strong>心理預期崩塌將封死內需</strong>
+            富國家與窮個人的感覺一旦深入人心，防禦性儲蓄會讓消費復甦永遠等不到。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 最終一句話 -->
+    <div class="core-concept" style="background:rgba(229,62,62,0.08); border-color:rgba(229,62,62,0.3)">
+      <div class="big-text" style="color:#fc8181">普通人每交一分電費、每等一趟遲到的公車、每領一份縮水的薪水</div>
+      <p>都在為這場規模宏大的債務魔術默默支付對價。</p>
+    </div>
+
+    <div class="pill-list" style="justify-content:center; margin-top:24px">
+      <span class="pill">地方債置換</span>
+      <span class="pill">LGFV</span>
+      <span class="pill">金融壓抑</span>
+      <span class="pill red">公交停運</span>
+      <span class="pill red">公務員減薪</span>
+      <span class="pill orange">水電氣漲價</span>
+      <span class="pill orange">醫保改革</span>
+      <span class="pill">出口驅動</span>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>本頁為《富國家與窮個人：內債轉移的隱形魔術》研究報告懶人包版本</p>
+  <p style="margin-top:6px; color:#4a5568">資料年份：2024｜整理日期：2026.05.17</p>
+</footer>
+
+</body>
+</html>
