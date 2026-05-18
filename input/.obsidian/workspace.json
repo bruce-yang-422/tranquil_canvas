@@ -1,0 +1,206 @@
+{
+  "main": {
+    "id": "6bb2fb24bc3aa9ab",
+    "type": "split",
+    "children": [
+      {
+        "id": "bd4f757f0eaa551d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "dc2712d118143a79",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "infographic-mailbox-history.md",
+                "mode": "preview",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "infographic-mailbox-history"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "262766f09e1dbb58",
+    "type": "split",
+    "children": [
+      {
+        "id": "0314bb8329b3baba",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "39cee9f0f058c5b3",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "檔案瀏覽器"
+            }
+          },
+          {
+            "id": "ce09e3969afd18bf",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜尋"
+            }
+          },
+          {
+            "id": "c60ff6bda46640c8",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "書籤"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "496fcfbcd116e9f7",
+    "type": "split",
+    "children": [
+      {
+        "id": "ca152395b17892d5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "702c5a07d60b5d1f",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "infographic-mailbox-history_by-hand.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "infographic-mailbox-history_by-hand 的反向連結"
+            }
+          },
+          {
+            "id": "83f4eafe6c399c4d",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "infographic-mailbox-history_by-hand.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "infographic-mailbox-history_by-hand 的對外連結"
+            }
+          },
+          {
+            "id": "7b53e60c6fc7ac03",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "標籤"
+            }
+          },
+          {
+            "id": "08b77f24a6da9742",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "所有屬性"
+            }
+          },
+          {
+            "id": "c3bb3cf704808aec",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "infographic-mailbox-history_by-hand.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "infographic-mailbox-history_by-hand 的大綱"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:開啟快速切換": false,
+      "graph:查看關聯圖": false,
+      "canvas:建立新畫布": false,
+      "daily-notes:開啟今天的每日筆記": false,
+      "templates:插入模板": false,
+      "command-palette:開啟命令面板": false,
+      "bases:建立新的 base": false
+    }
+  },
+  "active": "dc2712d118143a79",
+  "lastOpenFiles": [
+    "infographic-mailbox-history_by-hand.md.tmp.6212.ab9da77f3b52",
+    "infographic-mailbox-history.md.tmp.6212.d939d1fda334",
+    "infographic-example.md",
+    "infographic-mailbox-history.md",
+    "infographic_realplayer.md",
+    "infographic-mailbox-history_by-hand.md",
+    "infographic_defense_budget.md",
+    "Infographic_mental_health.md",
+    "infographic-mailbox-history_by-hand.md.tmp.6212.4d01a90da693",
+    "infographic-mailbox-history.md.tmp.6212.e220da027811",
+    "infographic-mailbox-history_by-hand.md.tmp.6212.2cb5852fc135",
+    "infographic-mailbox-history_by-hand.md.tmp.6212.b7fadbabc992",
+    "infographic-mailbox-history_by-hand.md.tmp.6212.dc2aafe88799",
+    "infographic-mailbox-history_by-hand.md.tmp.6212.95abbb16cf78",
+    "infographic-mailbox-history_by-hand.md.tmp.6212.0ce1a9d0f016",
+    "infographic-mailbox-history_by-hand.md.tmp.6212.37e658988b17",
+    "infographic-mailbox-history_by-hand.md.tmp.6212.32d01fd04bdf"
+  ]
+}

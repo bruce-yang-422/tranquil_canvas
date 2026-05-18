@@ -19,6 +19,18 @@ __pycache__/
 *.jpg
 *.jpeg
 *.webp
+!input/**/*.png
+!input/**/*.jpg
+!input/**/*.jpeg
+!input/**/*.webp
+!image/**/*.png
+!image/**/*.jpg
+!image/**/*.jpeg
+!image/**/*.webp
+!output/**/*.png
+!output/**/*.jpg
+!output/**/*.jpeg
+!output/**/*.webp
 
 # Archives
 *.rar

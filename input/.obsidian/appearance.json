@@ -1,0 +1,10 @@
+{
+  "theme": "obsidian",
+  "interfaceFontFamily": "Microsoft JhengHei",
+  "textFontFamily": "Microsoft JhengHei",
+  "monospaceFontFamily": "Microsoft JhengHei, sans-serif",
+  "enabledCssSnippets": [
+    "zh-readable-contrast"
+  ],
+  "cssTheme": "Blue Topaz"
+}

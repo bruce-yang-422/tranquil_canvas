@@ -1,7 +1,9 @@
 import argparse
 import base64
+import mimetypes
 import os
 import sys
+from contextlib import ExitStack
 from pathlib import Path
 from typing import Literal
 
@@ -54,11 +56,18 @@ SIZES = [
 ]
 SIZE_CHOICES = ["auto", *SIZES]
 QUALITIES = ["low", "medium", "high", "auto"]
+IMAGE_MODES = ["generate", "style-reference", "edit", "chatgpt-reference"]
+FIDELITY_CHOICES = ["low", "high"]
 DEFAULT_INPUT_DIR = Path("input")
 DEFAULT_OUTPUT_DIR = Path("output")
 DEFAULT_PROMPT_FILE = DEFAULT_INPUT_DIR / "prompt.txt"
 DEFAULT_BATCH_PREFIX = "image"
 TEXT_PROMPT_EXTENSIONS = {".txt", ".md"}
+IMAGE_FILE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".webp"}
+GENERATE_MODEL = "gpt-image-2"
+EDIT_MODEL = "gpt-image-1"
+STYLE_ANALYSIS_MODEL = "gpt-4.1-mini"
+CHATGPT_REFERENCE_MODEL = "gpt-5.5"
 
 
 def resolve_prompt_path(prompt_name: str, input_dir: Path) -> Path:
@@ -83,6 +92,38 @@ def load_prompt(prompt_path: Path) -> str:
     if not prompt:
         raise ValueError(f"prompt 檔案是空的：{prompt_path}")
     return prompt
+
+
+def resolve_input_asset_path(asset_name: str, input_dir: Path) -> Path:
+    asset_path = Path(asset_name)
+
+    if asset_path.is_absolute():
+        return asset_path
+
+    if asset_path.exists():
+        return asset_path
+
+    return input_dir / asset_path
+
+
+def resolve_image_paths(image_args: list[str] | None, input_dir: Path) -> list[Path]:
+    if not image_args:
+        return []
+
+    resolved_paths: list[Path] = []
+    for raw_path in image_args:
+        path = resolve_input_asset_path(raw_path, input_dir)
+        if not path.exists():
+            raise FileNotFoundError(f"找不到參考圖片：{path}")
+        if path.suffix.lower() not in IMAGE_FILE_EXTENSIONS:
+            allowed = ", ".join(sorted(IMAGE_FILE_EXTENSIONS))
+            raise ValueError(f"參考圖片格式不支援：{path}（僅支援 {allowed}）")
+        resolved_paths.append(path)
+
+    if len(resolved_paths) > 16:
+        raise ValueError("參考圖片最多只能提供 16 張")
+
+    return resolved_paths
 
 
 def parse_markdown_batch(batch_path: Path) -> tuple[str | None, list[tuple[str | None, str]]]:
@@ -305,6 +346,139 @@ def sanitize_output_stem(name: str) -> str:
     return stem or DEFAULT_BATCH_PREFIX
 
 
+def build_style_reference_prompt(prompt: str) -> str:
+    return (
+        "請根據下列風格描述來生成新圖。"
+        "只借用配色、質感、版式語氣、插畫筆觸或設計語言，"
+        "不要直接複製原圖的主體、構圖、文字、logo 或可辨識內容。"
+        "\n\n"
+        f"{prompt.strip()}"
+    )
+
+
+def build_edit_prompt(prompt: str) -> str:
+    return (
+        "請以輸入圖片為基礎進行重繪或改圖，"
+        "保留原圖的核心主體、主要構圖與關鍵資訊，"
+        "再依照下列需求修改、增補或重設風格。"
+        "\n\n"
+        f"{prompt.strip()}"
+    )
+
+
+def image_path_to_data_url(image_path: Path) -> str:
+    mime_type, _ = mimetypes.guess_type(image_path.name)
+    if not mime_type:
+        mime_type = "image/png"
+    image_b64 = base64.b64encode(image_path.read_bytes()).decode("ascii")
+    return f"data:{mime_type};base64,{image_b64}"
+
+
+def summarize_reference_style(client: OpenAI, image_paths: list[Path]) -> str:
+    if not image_paths:
+        raise ValueError("風格參考模式至少要提供一張圖片")
+
+    content: list[dict[str, str]] = [
+        {
+            "type": "input_text",
+            "text": (
+                "請分析這些參考圖片共同的視覺風格，只描述風格，不要描述特定主體內容。"
+                "請輸出一段精簡但可直接拿去生成圖片的中文風格摘要。"
+                "重點包含：配色、明暗、材質、插畫或攝影風格、構圖習慣、資訊密度、字體氣質、整體情緒。"
+                "避免提到具體人物、物件、地名、品牌、logo、畫面文字。"
+                "只輸出摘要本身，不要加標題、清單符號或前言。"
+            ),
+        }
+    ]
+
+    for image_path in image_paths:
+        content.append(
+            {
+                "type": "input_image",
+                "image_url": image_path_to_data_url(image_path),
+            }
+        )
+
+    response = client.responses.create(
+        model=STYLE_ANALYSIS_MODEL,
+        input=[{"role": "user", "content": content}],
+        max_output_tokens=400,
+    )
+    style_summary = response.output_text.strip()
+    if not style_summary:
+        raise ValueError("無法從參考圖提取風格摘要")
+
+    return style_summary
+
+
+def extract_image_b64_from_response(response) -> str:
+    for item in getattr(response, "output", []) or []:
+        if getattr(item, "type", None) == "image_generation_call":
+            result = getattr(item, "result", None)
+            if result:
+                return result
+
+    response_dict = response.model_dump() if hasattr(response, "model_dump") else {}
+    for item in response_dict.get("output", []):
+        if item.get("type") == "image_generation_call" and item.get("result"):
+            return item["result"]
+
+    raise ValueError("Responses API 未回傳圖片資料")
+
+
+def generate_image_with_chatgpt_reference(
+    client: OpenAI,
+    prompt: str,
+    image_paths: list[Path],
+    output_path: Path,
+    size: str = "1024x1024",
+    quality: Literal["low", "medium", "high", "auto"] = "medium",
+) -> Path:
+    if not image_paths:
+        raise ValueError("chatgpt-reference 模式至少要提供一張圖片")
+
+    print("[*] 正在用 ChatGPT 風格參考模式送出請求...")
+    print(f"    尺寸   : {size}  畫質: {quality}  參考圖: {len(image_paths)} 張")
+
+    content: list[dict[str, str]] = [
+        {
+            "type": "input_text",
+            "text": (
+                "請參考這些圖片的視覺風格、版面感、資訊密度、插畫語氣與排版傾向，"
+                "但不要直接複製原圖主體、文字或構圖。"
+                "\n\n"
+                f"{prompt.strip()}"
+            ),
+        }
+    ]
+    for image_path in image_paths:
+        content.append(
+            {
+                "type": "input_image",
+                "image_url": image_path_to_data_url(image_path),
+            }
+        )
+
+    response = client.responses.create(
+        model=CHATGPT_REFERENCE_MODEL,
+        input=[{"role": "user", "content": content}],
+        tools=[
+            {
+                "type": "image_generation",
+                "size": size,
+                "quality": quality,
+            }
+        ],
+    )
+
+    image_b64 = extract_image_b64_from_response(response)
+    image_bytes = base64.b64decode(image_b64)
+    output_path.write_bytes(image_bytes)
+
+    print(f"[+] 已儲存：{output_path.resolve()}")
+    return output_path
+
+
 def generate_image(
     client: OpenAI,
     prompt: str,
@@ -316,11 +490,47 @@ def generate_image(
     print(f"    尺寸   : {size}  畫質: {quality}")
 
     result = client.images.generate(
-        model="gpt-image-2",
+        model=GENERATE_MODEL,
         prompt=prompt,
         size=size,
         quality=quality,
     )
+
+    image_b64 = result.data[0].b64_json
+    assert image_b64, "API 未回傳圖片資料"
+    image_bytes = base64.b64decode(image_b64)
+
+    output_path.write_bytes(image_bytes)
+
+    print(f"[+] 已儲存：{output_path.resolve()}")
+    return output_path
+
+
+def edit_image(
+    client: OpenAI,
+    prompt: str,
+    image_paths: list[Path],
+    output_path: Path,
+    size: str = "1024x1024",
+    quality: Literal["low", "medium", "high", "auto"] = "medium",
+    input_fidelity: Literal["low", "high"] = "high",
+) -> Path:
+    if not image_paths:
+        raise ValueError("圖片參考模式至少要提供一張圖片")
+
+    print("[*] 正在送出圖片參考請求，等待模型回應...")
+    print(f"    尺寸   : {size}  畫質: {quality}  參考圖: {len(image_paths)} 張  fidelity: {input_fidelity}")
+
+    with ExitStack() as stack:
+        images = [stack.enter_context(path.open("rb")) for path in image_paths]
+        result = client.images.edit(
+            model=EDIT_MODEL,
+            image=images,
+            prompt=prompt,
+            size=size,
+            quality=quality,
+            input_fidelity=input_fidelity,
+        )
 
     image_b64 = result.data[0].b64_json
     assert image_b64, "API 未回傳圖片資料"
@@ -340,6 +550,9 @@ def generate_batch(
     quality: Literal["low", "medium", "high", "auto"],
     style_prompt: str | None,
     batch_prefix: str,
+    image_mode: Literal["generate", "style-reference", "edit"],
+    reference_images: list[Path],
+    input_fidelity: Literal["low", "high"],
 ) -> list[Path]:
     results: list[Path] = []
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -350,7 +563,35 @@ def generate_batch(
         combined_prompt = build_combined_prompt(style_prompt, scene_prompt)
 
         print(f"[{index}/{len(batch_items)}] 生成中：{output_path.name}")
-        results.append(generate_image(client, combined_prompt, output_path, size, quality))
+        if image_mode == "generate":
+            result = generate_image(client, combined_prompt, output_path, size, quality)
+        elif image_mode == "style-reference":
+            style_summary = summarize_reference_style(client, reference_images)
+            style_prompt = build_style_reference_prompt(
+                f"[參考風格摘要]\n{style_summary}\n\n[本次需求]\n{combined_prompt}"
+            )
+            result = generate_image(client, style_prompt, output_path, size, quality)
+        elif image_mode == "chatgpt-reference":
+            result = generate_image_with_chatgpt_reference(
+                client,
+                combined_prompt,
+                reference_images,
+                output_path,
+                size,
+                quality,
+            )
+        else:
+            result = edit_image(
+                client,
+                build_edit_prompt(combined_prompt),
+                reference_images,
+                output_path,
+                size,
+                quality,
+                input_fidelity,
+            )
+
+        results.append(result)
 
     return results
 
@@ -380,6 +621,24 @@ if __name__ == "__main__":
         "--batch-prefix",
         default=DEFAULT_BATCH_PREFIX,
         help="批次模式未指定檔名時的預設前綴（預設: image）",
+    )
+    parser.add_argument(
+        "--image-mode",
+        default="generate",
+        choices=IMAGE_MODES,
+        help="圖片模式：generate=純文字生圖，style-reference=先萃取風格再生圖，chatgpt-reference=像 ChatGPT 一樣把圖當上下文生圖，edit=以參考圖重繪/改圖",
+    )
+    parser.add_argument(
+        "--ref",
+        action="append",
+        dest="reference_images",
+        help="參考圖片路徑；可重複指定多次。style-reference 與 edit 模式至少要提供一張",
+    )
+    parser.add_argument(
+        "--input-fidelity",
+        default="high",
+        choices=FIDELITY_CHOICES,
+        help="參考圖保真度（僅 style-reference / edit 模式有效）",
     )
     parser.add_argument(
         "--image",
@@ -429,6 +688,12 @@ if __name__ == "__main__":
 
     try:
         client = OpenAI()
+        reference_images = resolve_image_paths(args.reference_images, DEFAULT_INPUT_DIR)
+
+        if args.image_mode != "generate" and not reference_images:
+            raise ValueError("--image-mode 為 style-reference、chatgpt-reference 或 edit 時，至少要提供一張 --ref 圖片")
+        if args.image_mode == "generate" and reference_images:
+            print("[!] 提醒：目前是 generate 模式，已忽略 --ref 圖片。若要使用參考圖，請加上 --image-mode style-reference 或 --image-mode edit。")
 
         if args.batch_file:
             batch_path = resolve_prompt_path(args.batch_file, DEFAULT_INPUT_DIR)
@@ -455,12 +720,41 @@ if __name__ == "__main__":
                 args.quality,
                 style_prompt,
                 sanitize_output_stem(args.batch_prefix),
+                args.image_mode,
+                reference_images,
+                args.input_fidelity,
             )
         else:
             prompt_path = resolve_prompt_path(args.prompt_file, DEFAULT_INPUT_DIR)
             prompt = load_prompt(prompt_path)
             output_path = resolve_output_path(args.output, output_dir)
-            generate_image(client, prompt, output_path, args.size, args.quality)
+            if args.image_mode == "generate":
+                generate_image(client, prompt, output_path, args.size, args.quality)
+            elif args.image_mode == "style-reference":
+                style_summary = summarize_reference_style(client, reference_images)
+                styled_prompt = build_style_reference_prompt(
+                    f"[參考風格摘要]\n{style_summary}\n\n[本次需求]\n{prompt}"
+                )
+                generate_image(client, styled_prompt, output_path, args.size, args.quality)
+            elif args.image_mode == "chatgpt-reference":
+                generate_image_with_chatgpt_reference(
+                    client,
+                    prompt,
+                    reference_images,
+                    output_path,
+                    args.size,
+                    args.quality,
+                )
+            else:
+                edit_image(
+                    client,
+                    build_edit_prompt(prompt),
+                    reference_images,
+                    output_path,
+                    args.size,
+                    args.quality,
+                    args.input_fidelity,
+                )
     except (FileNotFoundError, ValueError) as exc:
         print(f"[-] 錯誤：{exc}")
         sys.exit(1)

@@ -43,6 +43,9 @@ python main.py
 | `-b`, `--batch-file` | — | 批次模式 prompt 檔；支援 `.txt` 或 `.md` |
 | `--style-file` | — | 批次模式外部共用 style prompt 檔 |
 | `--batch-prefix` | `image` | 批次模式未指定檔名時的輸出前綴 |
+| `--image-mode` | `generate` | 圖片模式：`generate` 純文字生圖、`style-reference` 先萃取風格再生圖、`chatgpt-reference` 像 ChatGPT 一樣把圖當上下文生圖、`edit` 重繪/改圖 |
+| `--ref` | — | 參考圖片路徑；可重複指定多次，`style-reference` / `edit` 模式必填 |
+| `--input-fidelity` | `high` | 參考圖保真度；僅 `style-reference` / `edit` 模式有效 |
 | `--image` | — | 批次模式只輸出指定的第幾張（從 1 開始） |
 | `--images` | — | 批次模式只輸出指定的幾張，逗號分隔，例如 `8,11,13` |
 | `--from-image` | — | 批次模式從指定張數開始一路輸出到最後 |
@@ -133,6 +136,15 @@ python main.py -b infographic_God_Complex.md --range 2-5 -s 1024x1024 -q low --o
 # 批次模式：全部重跑，但跳過第 3、7、9 張
 python main.py -b infographic_God_Complex.md --skip-images 3,7,9 -s 1024x1024 -q low --output-dir output/infographic_god_complex
 
+# 風格參考：用參考圖借用配色、筆觸、版式語氣，但主體內容由 prompt 決定
+python main.py -b infographic-example.md --image 1 --image-mode style-reference --ref refs/style-01.png --ref refs/style-02.png -s 1024x1024 -q medium --output-dir output/style_ref
+
+# ChatGPT 風格參考：把參考圖直接當上下文一併理解，再出圖
+python main.py -b infographic-example.md --image 1 --image-mode chatgpt-reference --ref refs/style-01.png --ref refs/style-02.png -s 1024x1024 -q medium --output-dir output/chatgpt_ref
+
+# 重繪 / 改圖：以輸入圖片為底稿，依 prompt 修改
+python main.py -b infographic-example.md --image 1 --image-mode edit --ref refs/base-layout.png --input-fidelity high -s 1024x1024 -q medium --output-dir output/edit_ref
+
 # 21:9 超寬電影感橫式
 python main.py -s 2048x880  -q medium -o cinematic_wide.png
 python main.py -s 3840x1648 -q high   -o cinematic_wide_4k.png
@@ -218,6 +230,31 @@ Goal: Attract attention, establish series identity.
 ````
 
 兩種寫法產生的輸出相同；代碼塊外層的 ` ``` ` 會被自動剝除。
+
+### 參考圖模式
+
+可用 `--image-mode` 切換兩種圖片輸入模式：
+
+| 模式 | 用途 |
+| ---- | ---- |
+| `generate` | 純文字生圖，不使用參考圖 |
+| `style-reference` | 把輸入圖片當作風格參考，借用配色、版式、筆觸，但不要直接照抄主體 |
+| `chatgpt-reference` | 把輸入圖片直接當上下文一起理解，再像 ChatGPT 一樣綜合生成 |
+| `edit` | 把輸入圖片當作底稿進行重繪、修改、補件或換風格 |
+
+`--ref` 可重複使用多次，最多 16 張：
+
+```bash
+python main.py -p poster.md --image-mode style-reference --ref refs/a.png --ref refs/b.jpg -o poster.png
+python main.py -p poster.md --image-mode chatgpt-reference --ref refs/a.png --ref refs/b.jpg -o poster.png
+python main.py -p revise.md --image-mode edit --ref refs/base.png --input-fidelity high -o revised.png
+```
+
+注意：
+
+- `style-reference` / `edit` 模式至少要提供一張 `--ref`
+- 支援格式：`.png`、`.jpg`、`.jpeg`、`.webp`
+- `input-fidelity=high` 會更貼近原參考圖；`low` 則給模型更大改動空間
 
 #### 輸出檔名對應
 
